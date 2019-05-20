@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><?=$title?></title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<template id="loginFormTemplate">
+  <h2>Login</h2>
+  <form id="loginForm" method="post">
+    <label for="username">Användarnamn</label>
+    <input type="text" name="username" id="username"> <br>
+    <label for="password">Lösenord</label>
+    <input type="password" name="password" id="password"> <br>
+    <button type="submit">Logga in</button>
+  </form>
+</template>
+
+<template id="registerFormTemplate">
+  <h2>Registrera användare</h2>
+
+  <form action="localhost:8000/api/register" method="post">
+    <input type="username">
+    <input type="password">
+    <input type="submit" value="Registrera">
+  </form>
+
+  <p>Det här är en template som visar ett registreringsformulär </p>
+</template>
+
+<div class="container">
+  <header>
+    <h1> <?= $title ?> </h1>
+  </header>
+</div>
+
+  <main>
+    
+    
+  </main>
+
+  <script type="text/javascript" src="main.js"></script>
+</body>
+</html>
