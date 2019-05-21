@@ -1,5 +1,7 @@
+
+
 const views = {
-    loggedin: ["#allEntriesTemplate"]
+    loggedin: ["#allEntriesTemplate", "#createNewEntryTemplate"]
   }
   
   function renderView(view){
@@ -18,6 +20,7 @@ const views = {
     // Fyll diven med innehåll
   
     div.innerHTML = templateMarkup;
+    
   
     // Lägg in diven i target (main-element)
   
