@@ -4,19 +4,20 @@ return function ($app) {
   // Register auth middleware
   $auth = require __DIR__ . '/../middlewares/auth.php';
 
-  // // Add a login route
-  // $app->post('/api/login', function ($request, $response) {
-  //   $data = $request->getParsedBody();
-  //   if ($data['username'] && $data['password']) {
-  //     $username = $data['username'];
-  //     $password = password_hash($data['password'], PASSWORD_BCRYPT);
-  //     $user = new User($this->db);
-  //     return $response->withJson($user->logIn($username, $password));
-  //   }
+   // Add a login route
+   $app->post('/api/login', function ($request, $response) {
+     $data = $request->getParsedBody();
+     echo $data;
+     if ($data['username'] && $data['password']) {
+       $username = $data['username'];
+       $password = password_hash($data['password'], PASSWORD_BCRYPT);
+       $user = new User($this->db);
+       return $response->withJson($user->logIn($username, $password));
+     }
     
-  // });
+  });
 
-
+/*
   $app->post('/api/login', function ($request, $response) {
     $data = $request->getParsedBody();
     if ($data['username'] && $data['password']) {
@@ -29,6 +30,7 @@ return function ($app) {
       return $response->withStatus(401);
     }
   });
+  */
 
   // Add a ping route
   $app->get('/api/ping', function ($request, $response, $args) {
