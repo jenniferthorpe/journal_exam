@@ -5,7 +5,7 @@ const views = {
   function renderView(view){
     // Definiera ett target
     const target = document.querySelector('main');
-    target.innerHTML = ''
+   
   
     // Loopa igenom våran "view"
     view.forEach(template => {
