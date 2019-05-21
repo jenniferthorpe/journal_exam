@@ -3,13 +3,13 @@
 })();
 
 const views = {
-  login: ["#loginFormTemplate"],
-  register: ["#registerFormTemplate"]
+  login: ["#loginFormTemplate", "#registerFormTemplate"]
 }
 
 function renderView(view){
   // Definiera ett target
   const target = document.querySelector('main');
+  target.innerHTML = ''
 
   // Loopa igenom våran "view"
   view.forEach(template => {
@@ -32,22 +32,26 @@ function renderView(view){
 }
 
 renderView(views.login)
-renderView(views.register)
 
 
-const loginForm = document.querySelector('loginForm')
-loginForm.addEventListener('submit', e => {
+const loginForm = document.querySelector('#loginForm')
+
+loginForm.addEventListener('submit', event => {
   event.preventDefault();
-  const formData = new formData(loginForm)
+  const formData = new FormData(loginForm)
   fetch('/api/login', {
     method: 'POST',
     body: formData
   }).then(response => {
     if(!response.ok){
-      renderView(view.loginError)
+      // renderView(view.loginError)
+      renderView(views.login)
+      console.log("Ej inloggad");
       return Error(response.statusText)
-    } else{
-      renderView(view.loggedIn)
+    } else {
+      // renderView(view.loggedIn)
+      renderView(views.login)
+      console.log("Inloggad");
       return response.json()
     }
   }).catch(error =>{
@@ -73,6 +77,3 @@ fetch('/api/allusers')
 })
 }
 
-
-renderView(views.login)
-renderView(views.register)
