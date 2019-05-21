@@ -54,8 +54,6 @@ loginForm.addEventListener('submit', event => {
       console.log("Inloggad");
       return response.json()
     }
-  }).catch(error =>{
-    console.error(error)
   })
 
 })
