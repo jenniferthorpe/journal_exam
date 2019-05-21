@@ -36,6 +36,17 @@ class Entry extends Mapper {
     ]);
   }
 
+  //Updatera inlägg - funktion
 
+  public function updateEntry($title, $content, $entryID){
+
+    $statement = $this->database->prepare("UPDATE  entries SET title = :title,  content = :content, entryID = :entryID WHERE entryID = :entryID");
+    $statement->execute([
+ 
+      ':title' => $title,
+      ':content' => $content,
+      ':entryID' => $entryID
+    ]);
+  }
 
 }
