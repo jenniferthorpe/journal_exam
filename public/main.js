@@ -58,20 +58,5 @@ loginForm.addEventListener('submit', event => {
 
 })
 
-function register(){
 
-fetch('/api/register')
-.then (response => response.json())
-.then (data => {
-  console.log(data);
-})
-}
-
-function allUsers(){
-fetch('/api/allusers')
-.then (response => response.json())
-.then (data => {
-  console.log(data);
-})
-}
 

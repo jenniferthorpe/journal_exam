@@ -1,11 +1,13 @@
+
+
 const views = {
-    loggedin: ["#allEntriesTemplate"]
+    loggedin: ["#allEntriesTemplate", "#createNewEntryTemplate"]
   }
   
   function renderView(view){
     // Definiera ett target
     const target = document.querySelector('main');
-    target.innerHTML = ''
+   
   
     // Loopa igenom våran "view"
     view.forEach(template => {
@@ -18,6 +20,7 @@ const views = {
     // Fyll diven med innehåll
   
     div.innerHTML = templateMarkup;
+    
   
     // Lägg in diven i target (main-element)
   
