@@ -29,10 +29,9 @@ class Entry extends Mapper {
 
 
   public function deleteEntry($userID, $entryID){
-    $statement = $this->db->prepare("DELETE FROM entries WHERE userID = :userID AND entryID = :entryID");
+    $statement = $this->db->prepare("DELETE FROM entries WHERE entryID = :entryID");
     $statement->execute([
-      'userID' => $userID,
-      'entryID'=> $entryID
+      'userID' => $userID
     ]);
   }
 
