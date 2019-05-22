@@ -4,16 +4,16 @@ return function ($app) {
   // Register auth middleware
   $auth = require __DIR__ . '/../middlewares/auth.php';
 
-  //Change username
-  $app->put('/user/change', function($request, $response, $args){
-    $data = $request->getParsedBody();
-    if($data['username'] && $data['newUsername']) {
-      $username = $data['username'];
-      $newUsername = $data['newUsername'];
-      $user = new User($this->db);
-      return $response->withJson($user->changeUsername($username, $newUsername));
-    }
-  })->add($auth);
+  // //Change username
+  // $app->put('/user/change', function($request, $response, $args){
+  //   $data = $request->getParsedBody();
+  //   if($data['username'] && $data['newUsername']) {
+  //     $username = $data['username'];
+  //     $newUsername = $data['newUsername'];
+  //     $user = new User($this->db);
+  //     return $response->withJson($user->changeUsername($username, $newUsername));
+  //   }
+  // })->add($auth);
 
   //Get user by username
   $app->get('/user/name/{username}', function ($request, $response, $args) {
