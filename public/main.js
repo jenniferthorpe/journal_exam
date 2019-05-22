@@ -1,6 +1,6 @@
 
 const views = {
-  start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"],
+  start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"]
 }
 
 function renderView(view) {
@@ -30,7 +30,7 @@ function renderView(view) {
 }
 
 
-renderView(views.login)
+renderView(views.start)
 
 
 const loginForm = document.querySelector('#loginForm')
@@ -42,19 +42,18 @@ loginForm.addEventListener('submit', event => {
     method: 'POST',
     body: formData
   }).then(response => {
-
-    if(!response.ok){
-      // renderView(view.loginError)
-      renderView(views.login)
-      console.log("Ej inloggad");
+    if (!response.ok) {
       return Error(response.statusText)
     } else {
-      // renderView(view.loggedIn)
-      renderView(views.login)
-      console.log("Inloggad");
-      return response.json()
+      renderView(view.loggedIn)
+      //renderView(views.login)
+      //console.log("Inloggad");
+      // return response.json()
     }
   })
+    .catch(error => {
+      console.error(error)
+    })
 })
 
 
@@ -73,13 +72,13 @@ function allEntries() {
       console.log(data);
 
       for (let i = 0; i < data.length; i++) {
-        const div = document.createElement("div");
-        div.setAttribute("class", "entries");
-        div.setAttribute("style", "padding: 15px 0px");
-        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>";
-        target.append(div);
+        const a = document.createElement("a");
+        a.setAttribute("class", "entries");
+        a.setAttribute("href", "länken");
+        a.setAttribute("style", "padding: 15px 0px");
+        a.innerHTML += data[i].title + "<br>";
+        target.append(a);
       }
-
     })
     .catch(err => {
       console.log(err);
