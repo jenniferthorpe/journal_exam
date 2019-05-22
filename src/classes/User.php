@@ -16,15 +16,16 @@ class User extends Mapper {
     ]);
     return $statement->fetch(PDO::FETCH_ASSOC);
   }
-
-  public function changeUsername($username, $newUsername){
-    $statement = $this->db->prepare("UPDATE users SET username = :newUsername WHERE username = :username");
-    $statement->execute([
-      'newUsername' => $newUsername,
-      'username' => $username
-    ]);
-    return $response->withJson(['newUsername' => $newUsername]);
-  }
+  
+  // public function changeUsername($username, $newUsername){
+  //   $statement = $this->db->prepare("UPDATE users SET username = :newUsername WHERE username = :username");
+  //   $statement->execute([
+  //     ':username' => $username,
+  //     ':newUsername' => $newUsername
+  //     ]);
+  //     return $statement->fetch(PDO::FETCH_ASSOC);
+  // }
+   
   
   public function getAllUsers(){
     $statement = $this->db->prepare("SELECT * FROM users");

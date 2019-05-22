@@ -21,10 +21,10 @@ class Entry extends Mapper {
 
   public function getXLatestEntries($num) {
     $orderby = 'ASC';
-    $statement = $this->db->prepare("SELECT * FROM entries ORDER BY createdDate {$orderby} LIMIT :num");
+    $statement = $this->db->prepare("SELECT title, content FROM entries ORDER BY createdAt {$orderby} LIMIT :num");
     $statement->bindParam(':num', $num, PDO::PARAM_INT);
     $statement->execute();
-  return $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
 
@@ -35,8 +35,6 @@ class Entry extends Mapper {
       'entryID'=> $entryID
     ]);
   }
-
-  //Updatera inlägg - funktion
 
   public function updateEntry($title, $content, $entryID){
 
