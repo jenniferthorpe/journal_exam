@@ -11,7 +11,7 @@
 
 <template id="loginFormTemplate">
   <h2>Login</h2>
-  <form id="loginForm" method="post">
+  <form id="loginForm">
     <label for="username">Användarnamn</label>
     <input type="text" name="username" id="username"> <br>
     <label for="password">Lösenord</label>
@@ -23,10 +23,12 @@
 <template id="registerFormTemplate">
   <h2>Registrera användare</h2>
 
-  <form action="localhost:8000/api/register" method="post">
+  <form id="registerForm">
+  <label for="username">Användarnamn</label>
     <input type="username">
+    <label for="password">Lösenord</label>
     <input type="password">
-    <input type="submit" value="Registrera">
+    <button type="submit">Registrera</button>
   </form>
 
   <p>Det här är en template som visar ett registreringsformulär </p>

@@ -8,6 +8,7 @@ function renderView(view) {
   const target = document.querySelector('main');
   target.innerHTML = '';
 
+
   // Loopa igenom våran "view"
   view.forEach(template => {
     const templateMarkup = document.querySelector(template).innerHTML;
@@ -28,44 +29,34 @@ function renderView(view) {
 
 }
 
-renderView(views.start)
+
+renderView(views.login)
+
 
 const loginForm = document.querySelector('#loginForm')
-loginForm.addEventListener('submit', e => {
+
+loginForm.addEventListener('submit', event => {
   event.preventDefault();
-  const formData = new formData(loginForm)
+  const formData = new FormData(loginForm)
   fetch('/api/login', {
     method: 'POST',
     body: formData
   }).then(response => {
-    if (!response.ok) {
-      renderView(view.loginError)
+
+    if(!response.ok){
+      // renderView(view.loginError)
+      renderView(views.login)
+      console.log("Ej inloggad");
       return Error(response.statusText)
     } else {
-      renderView(view.loggedIn)
+      // renderView(view.loggedIn)
+      renderView(views.login)
+      console.log("Inloggad");
       return response.json()
     }
-  }).catch(error => {
-    console.error(error)
   })
 })
 
-function register() {
-
-  fetch('/api/register')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    })
-}
-
-function allUsers() {
-  fetch('/api/allusers')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    })
-}
 
 let entryElement = document.querySelector("#entries");
 
