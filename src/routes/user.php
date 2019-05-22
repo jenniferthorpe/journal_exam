@@ -5,14 +5,13 @@ return function ($app) {
   $auth = require __DIR__ . '/../middlewares/auth.php';
 
   //Change username
-  $app->PUT('user/change', function($request, $response, $args){
+  $app->put('/user/change', function($request, $response, $args){
     $data = $request->getParsedBody();
-    if($data['username'] && $data['password'] && $data['newUsername']) {
+    if($data['username'] && $data['newUsername']) {
       $username = $data['username'];
-      $password = $data['password'];
       $newUsername = $data['newUsername'];
       $user = new User($this->db);
-      return $response->withJson($user->changeUsername($username, $password, $newUsername));
+      return $response->withJson($user->changeUsername($username, $newUsername));
     }
   })->add($auth);
 
