@@ -47,4 +47,13 @@ class Entry extends Mapper {
     ]);
   }
 
+  public function getUserEntries($userID) {
+    $statement = $this->db->prepare("SELECT * FROM entries WHERE userID = :userID");
+    $statement->execute([
+      ':userID' => $userID
+    ]);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+
 }

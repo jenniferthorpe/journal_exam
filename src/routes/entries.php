@@ -51,17 +51,12 @@ return function ($app) {
       }
     })->add($auth);
 
+    //Get last entries for specific userID OBS!! Måste skrivas om så att userID istället är från SESSION
+    $app->get('/api/entries/{userid}', function ($request, $response, $args) { 
+      $userID = $args['userid'];
+      $entry = new Entry($this->db);   
+      return $response->withJson($entry->getUserEntries($userID));
+  });// OBS!!!! Lägg in ->add($auth);
+
 
 };
-
-// Redigera inlägg - kolla med jonas!
-$app->put('api/entry/update', function ($req, $resp, $args){
-  $data = $req->getParsedBody();
- 
-  $content = $data['content'];
-  $title = $data['title'];
-  $entryID =$data['entryID'];
-  $entries = new Entry($this->db);
- 
-  return $resp->withJson($entries->updateEntry($title, $content, $entryID));
- })->add($auth);

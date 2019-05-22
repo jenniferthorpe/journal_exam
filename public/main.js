@@ -30,7 +30,7 @@ function renderView(view) {
 }
 
 
-renderView(views.login)
+renderView(views.start)
 
 
 const loginForm = document.querySelector('#loginForm')
