@@ -7,19 +7,24 @@ return function ($app) {
    // Add a login route
    $app->post('/api/login', function ($request, $response) {
      $data = $request->getParsedBody();
+     if (!empty($data['username']) && !empty($data['password'])) {
        $username = $data['username'];
        $password = $data['password'];
        $user = new User($this->db);
 
        return $response->withJson($user->logIn($username, $password));
 
-       if(password_verify($password, $user['password'])){
+       if(password_verify($password, $anv['password'])){
         session_start();
         $_SESSION['loggedIn'] = true;
         $_SESSION['userID'] = $user['userID'];
       }else{
         return $response->withStatus(401);
       }
+    }
+    else {
+      return $response->withStatus(401);
+    }
     });
 
 

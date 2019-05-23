@@ -46,7 +46,7 @@ class User extends Mapper {
     VALUES (:username, :password)");
     $statement->execute([
       ':username' => $username,
-      ':password' => $password
+      ":password" => password_hash($_POST['password'], PASSWORD_BCRYPT)
     ]);
     
   }

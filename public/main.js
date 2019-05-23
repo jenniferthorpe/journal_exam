@@ -34,6 +34,7 @@ renderView(views.start)
 
 
 const loginForm = document.querySelector('#loginForm')
+const messageLogin = document.querySelector('#messageLogin')
 
 loginForm.addEventListener('submit', event => {
   event.preventDefault();
@@ -43,6 +44,7 @@ loginForm.addEventListener('submit', event => {
     body: formData
   }).then(response => {
     if (!response.ok) {
+      messageLogin.innerHTML = "Ange användarnamn och lösenord."
       return Error(response.statusText)
     } else {
       renderView(view.loggedIn)
@@ -57,14 +59,41 @@ loginForm.addEventListener('submit', event => {
 })
 
 
+//Registrera användare
+const registerForm = document.querySelector('#registerForm')
+const messageRegister = document.querySelector('#messageRegister')
+
+registerForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(registerForm)
+  fetch('/api/register', {
+    method: 'POST',
+    body: formData
+  }).then(response => {
+    if (!response.ok) {
+      messageRegister.innerHTML = "Ange ett användarnamn och lösenord."
+      // return Error(response.statusText)
+    } else {
+      messageRegister.innerHTML = "Användare skapad."
+    }
+  })
+    .catch(error => {
+      console.error(error)
+    })
+})
+
+
+
 let entryElement = document.querySelector("#entries");
 
-function allEntries() {
+(function allEntries() {
   const target = document.querySelector('#entries');
 
   fetch('/entries/last/20')
     .then(response => {
-      if (!response.ok) { throw Error(response.statusText); }
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
 
       return response.json();
     })
@@ -83,7 +112,6 @@ function allEntries() {
     .catch(err => {
       console.log(err);
     });
-}
+})();
 
-allEntries();
 
