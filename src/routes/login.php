@@ -11,14 +11,12 @@ return function ($app) {
        $username = $data['username'];
        $password = $data['password'];
        $user = new User($this->db);
+       $userData = $user->logIn($username, $password);
 
-       return $response->withJson($user->logIn($username, $password));
-
-
-       if(password_verify($password, $anv['password'])){
-        session_start();
+       if(password_verify($password, $userData['password'])){
         $_SESSION['loggedIn'] = true;
-        $_SESSION['userID'] = $user['userID'];
+        $_SESSION['userID'] = $userData['userID'];
+        return $response->withJson($userData);
       }else{
         return $response->withStatus(401);
       }

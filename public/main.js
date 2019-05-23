@@ -1,6 +1,7 @@
 
 const views = {
-  start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"]
+  start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"],
+  loggedIn: ["#allEntriesTemplate", "#createNewEntryTemplate", "#createNewEntryTemplate"]
 }
 
 function renderView(view) {
@@ -25,38 +26,41 @@ function renderView(view) {
 
     target.append(div);
 
+    if (template === '#loginFormTemplate') { bindLoginEvents() }
+
   })
+
+
 
 }
 
 
 renderView(views.start)
 
+function bindLoginEvents() {
+  const loginForm = document.querySelector('#loginForm')
+  const messageLogin = document.querySelector('#messageLogin')
 
-const loginForm = document.querySelector('#loginForm')
-const messageLogin = document.querySelector('#messageLogin')
-
-loginForm.addEventListener('submit', event => {
-  event.preventDefault();
-  const formData = new FormData(loginForm)
-  fetch('/api/login', {
-    method: 'POST',
-    body: formData
-  }).then(response => {
-    if (!response.ok) {
-      messageLogin.innerHTML = "Ange användarnamn och lösenord."
-      return Error(response.statusText)
-    } else {
-      renderView(view.loggedIn)
-      //renderView(views.login)
-      //console.log("Inloggad");
-      // return response.json()
-    }
-  })
-    .catch(error => {
-      console.error(error)
+  loginForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const formData = new FormData(loginForm)
+    fetch('/api/login', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (!response.ok) {
+        messageLogin.innerHTML = "Ange användarnamn och lösenord."
+        return Error(response.statusText)
+      } else {
+        renderView(view.loggedIn)
+      }
     })
-})
+      .catch(error => {
+        console.error(error)
+      })
+  })
+}
+
 
 
 //Registrera användare
