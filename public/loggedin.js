@@ -83,7 +83,6 @@ deleteEntry.addEventListener('submit', event => {
 
     let entryID = document.querySelector('#entryID')
 
-
     fetch('/api/delete/' + entryID, {
         method: 'POST',
         body: formData
