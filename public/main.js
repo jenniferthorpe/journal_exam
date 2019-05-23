@@ -1,6 +1,6 @@
 
 const views = {
-  start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"],
+  start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"]
 }
 
 function renderView(view) {
@@ -34,6 +34,7 @@ renderView(views.start)
 
 
 const loginForm = document.querySelector('#loginForm')
+const messageLogin = document.querySelector('#messageLogin')
 
 loginForm.addEventListener('submit', event => {
   event.preventDefault();
@@ -42,30 +43,57 @@ loginForm.addEventListener('submit', event => {
     method: 'POST',
     body: formData
   }).then(response => {
-
-    if(!response.ok){
-      // renderView(view.loginError)
-      renderView(views.login)
-      console.log("Ej inloggad");
+    if (!response.ok) {
+      messageLogin.innerHTML = "Ange användarnamn och lösenord."
       return Error(response.statusText)
     } else {
-      // renderView(view.loggedIn)
-      renderView(views.login)
-      console.log("Inloggad");
-      return response.json()
+      renderView(view.loggedIn)
+      //renderView(views.login)
+      //console.log("Inloggad");
+      // return response.json()
     }
   })
+    .catch(error => {
+      console.error(error)
+    })
 })
+
+
+//Registrera användare
+const registerForm = document.querySelector('#registerForm')
+const messageRegister = document.querySelector('#messageRegister')
+
+registerForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(registerForm)
+  fetch('/api/register', {
+    method: 'POST',
+    body: formData
+  }).then(response => {
+    if (!response.ok) {
+      messageRegister.innerHTML = "Ange ett användarnamn och lösenord."
+      // return Error(response.statusText)
+    } else {
+      messageRegister.innerHTML = "Användare skapad."
+    }
+  })
+    .catch(error => {
+      console.error(error)
+    })
+})
+
 
 
 let entryElement = document.querySelector("#entries");
 
-function allEntries() {
+(function allEntries() {
   const target = document.querySelector('#entries');
 
   fetch('/entries/last/20')
     .then(response => {
-      if (!response.ok) { throw Error(response.statusText); }
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
 
       return response.json();
     })
@@ -73,18 +101,17 @@ function allEntries() {
       console.log(data);
 
       for (let i = 0; i < data.length; i++) {
-        const div = document.createElement("div");
-        div.setAttribute("class", "entries");
-        div.setAttribute("style", "padding: 15px 0px");
-        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>";
-        target.append(div);
+        const a = document.createElement("a");
+        a.setAttribute("class", "entries");
+        a.setAttribute("href", "länken");
+        a.setAttribute("style", "padding: 15px 0px");
+        a.innerHTML += data[i].title + "<br>";
+        target.append(a);
       }
-
     })
     .catch(err => {
       console.log(err);
     });
-}
+})();
 
-allEntries();
 

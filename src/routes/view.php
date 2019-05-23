@@ -17,4 +17,11 @@ return function ($app) {
       'title' => 'Välkommen!'
     ]);
   });
+
+  // AllUsers route
+  $app->get('/allusers', function ($request, $response, $args) {
+    return $this->renderer->render($response, 'viewAllUsers.phtml', [
+      'title' => 'Välkommen!'
+    ]);
+  });
 };

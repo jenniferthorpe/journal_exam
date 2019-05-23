@@ -50,12 +50,15 @@ return function ($app) {
   // POST route for new user
   $app->post('/api/register', function ($request, $response) {
     $data = $request->getParsedBody();
-    if ($data['username'] && $data['password']) {
+    if (!empty($data['username']) && !empty($data['password'])) {
       $username = $data['username'];
       $password = $data['password'];
       $user = new User($this->db);
       return $response->withJson($user->createNewUser($username, $password));
     }
-  })->add($auth);
+    else {
+      return $response->withStatus(401);
+    }
+  });
 
 };
