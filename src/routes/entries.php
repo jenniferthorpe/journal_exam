@@ -32,8 +32,7 @@ return function ($app) {
     })->add($auth);
 
       //Delete entry
-    $app->DELETE('/api/delete/{userid}/{entryid}', function ($request, $response, $args) {
-      $userID = $args['userid'];
+    $app->DELETE('/api/delete/{entryid}', function ($request, $response, $args) {
       $entryID = $args['entryid'];
       $entry = new Entry($this->db);
       return $response->withJson($entry->deleteEntry($userID, $entryID));
@@ -49,7 +48,15 @@ return function ($app) {
         $entry = new Entry($this->db);
         return $response->withJson($entry->createNewEntry($title, $content, $userID));
       }
-    })->add($auth);
+    }); // OBS!!!! Lägg in ->add($auth);
+
+    //Get last entries for specific userID OBS!! Måste skrivas om så att userID istället är från SESSION
+    $app->get('/api/entries/{userid}', function ($request, $response, $args) { 
+      $userID = $args['userid'];
+      $entry = new Entry($this->db);   
+      return $response->withJson($entry->getUserEntries($userID));
+  });// OBS!!!! Lägg in ->add($auth);
 
 
 };
+

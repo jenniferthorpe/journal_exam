@@ -5,23 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome to your journal!</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
-<template id="allEntriesTemplate">
-  <h2>Dina tidigare inlägg</h2>
-  
+<template id="entriesTemplate">
+  <h2>Dina tidigare inlägg:</h2>
+  <div id="entries"></div>
 </template>
+
 
 <template id="createNewEntryTemplate">
   <h2>Skriv ett nytt inlägg</h2>
+  <form id="newEntryForm">
+    <label for="title">Titel</label>
+    <input type="text" name="title" id="title"> <br>
+    <label for="content">Inlägg</label>
+    <input type="textarea" name="content" id="content"> <br>
+    <p>userID OBS!!! Denna input måste tas bort och ersättas av SESSION_userID</p>
+    <input type="textarea" name="userID" id="userID" value=7> <br>
+    <button type="submit">Registrera inlägg</button>
+    
+  </form>
   
 </template>
 
-<template id="createNewEntryTemplate">
-  <h2>Skriv ett nytt inlägg</h2>
-  
-</template>
 
 
 <div class="container">
