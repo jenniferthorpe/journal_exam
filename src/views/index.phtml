@@ -11,31 +11,31 @@
 
 <template id="loginFormTemplate">
   <h2>Login</h2>
-  <form id="loginForm">
+  <form id="loginForm" action="login" method="POST">
     <label for="username">Användarnamn</label>
     <input type="text" name="username" id="username"> <br>
     <label for="password">Lösenord</label>
     <input type="password" name="password" id="password"> <br>
     <button type="submit">Logga in</button>
   </form>
+  <div id="messageLogin"></div>
 </template>
 
 <template id="registerFormTemplate">
   <h2>Registrera användare</h2>
-
+  
   <form id="registerForm">
-  <label for="username">Användarnamn</label>
-    <input type="username">
+    <label for="username">Användarnamn</label>
+    <input type="text" name="username"> <br>
     <label for="password">Lösenord</label>
-    <input type="password">
+    <input type="password" name="password"> <br>
     <button type="submit">Registrera</button>
   </form>
-
-  <p>Det här är en template som visar ett registreringsformulär </p>
+  <div id="messageRegister"></div>
 </template>
 
 <template id="entriesTemplate">
-  <h2>Senaste inläggen:</h2>
+  <h2>Senaste inläggen</h2>
   <div id="entries"></div>
 </template>
 

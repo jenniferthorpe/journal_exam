@@ -7,12 +7,12 @@ return function ($app) {
 
     // Redigera inlägg - kolla med jonas!
     $app->put('/api/entry/update', function ($req, $resp, $args){
-    $data = $req->getParsedBody();
+      $data = $req->getParsedBody();
     
-    $content = $data['content'];
-    $title = $data['title'];
-    $entryID =$data['entryID'];
-    $entries = new Entry($this->db);
+      $title = $data['title'];
+      $content = $data['content'];
+      $entryID = $data['entryID'];
+      $entries = new Entry($this->db);
     
     return $resp->withJson($entries->updateEntry($title, $content, $entryID));
     })->add($auth);
@@ -53,15 +53,3 @@ return function ($app) {
 
 
 };
-
-// Redigera inlägg - kolla med jonas!
-$app->put('api/entry/update', function ($req, $resp, $args){
-  $data = $req->getParsedBody();
- 
-  $content = $data['content'];
-  $title = $data['title'];
-  $entryID =$data['entryID'];
-  $entries = new Entry($this->db);
- 
-  return $resp->withJson($entries->updateEntry($title, $content, $entryID));
- })->add($auth);
