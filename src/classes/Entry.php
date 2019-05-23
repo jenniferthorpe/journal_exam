@@ -28,12 +28,12 @@ class Entry extends Mapper {
   }
 
 
-  public function deleteEntry($userID, $entryID){
-    $statement = $this->db->prepare("DELETE FROM entries WHERE userID = :userID AND entryID = :entryID");
+  public function deleteEntry($entryID){
+    $statement = $this->db->prepare("DELETE FROM entries WHERE entryID = :entryID");
     $statement->execute([
-      'userID' => $userID,
-      'entryID'=> $entryID
+      ':entryID' => $entryID
     ]);
+    return $statement->fetch(PDO::FETCH_ASSOC);
   }
 
   public function updateEntry($title, $content, $entryID){
@@ -44,5 +44,14 @@ class Entry extends Mapper {
       ':entryID' => $entryID
     ]);
   }
+
+  public function getUserEntries() {
+    $statement = $this->db->prepare("SELECT * FROM entries WHERE userID = :userID");
+    $statement->execute([
+      ':userID' => $_SESSION['userID']
+    ]);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+  }
+
 
 }

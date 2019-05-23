@@ -1,7 +1,7 @@
 
 const views = {
   start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"],
-  loggedIn: ["#allEntriesTemplate", "#createNewEntryTemplate", "#createNewEntryTemplate"]
+  loggedIn: ["#logoutFormTemplate", "#userEntriesTemplate", "#createNewEntryTemplate"]
 }
 
 function renderView(view) {
@@ -26,7 +26,7 @@ function renderView(view) {
 
     target.append(div);
 
-    if (template === '#loginFormTemplate') { bindLoginEvents() }
+    if (template === '#loginFormTemplate') { bindEvents() }
 
   })
 
@@ -34,13 +34,20 @@ function renderView(view) {
 
 }
 
+//---------------------------//
+//-------Förstasidan---------//
+//---------------------------//
 
-renderView(views.start)
+renderView(views.start);
 
-function bindLoginEvents() {
+
+
+function bindEvents() {
   const loginForm = document.querySelector('#loginForm')
   const messageLogin = document.querySelector('#messageLogin')
 
+
+  //Logga in
   loginForm.addEventListener('submit', event => {
     event.preventDefault();
     const formData = new FormData(loginForm)
@@ -52,7 +59,8 @@ function bindLoginEvents() {
         messageLogin.innerHTML = "Ange användarnamn och lösenord."
         return Error(response.statusText)
       } else {
-        renderView(view.loggedIn)
+        renderView(views.loggedIn)
+        userEntries();
       }
     })
       .catch(error => {
@@ -60,6 +68,7 @@ function bindLoginEvents() {
       })
   })
 }
+
 
 
 
@@ -87,10 +96,10 @@ registerForm.addEventListener('submit', event => {
 })
 
 
-
+//Visa 20 senaste inläggen
 let entryElement = document.querySelector("#entries");
 
-(function allEntries() {
+function allEntries() {
   const target = document.querySelector('#entries');
 
   fetch('/entries/last/20')
@@ -116,6 +125,108 @@ let entryElement = document.querySelector("#entries");
     .catch(err => {
       console.log(err);
     });
-})();
+};
+
+allEntries();
+
+
+
+//------------------------------------//
+//-------Inloggat läge----------------//
+//------------------------------------//
+
+fetch('/api/ping')
+  .then(response => {
+    console.log(response);
+    if (response.ok) {
+      renderView(views.loggedIn);
+      userEntries();
+    }
+  })
+
+
+const logoutForm = document.querySelector("#logoutForm")
+
+//Logout
+logoutForm.addEventListener('submit', event => {
+  event.preventDefault();
+  fetch('/api/logout', {
+    method: 'GET',
+  }).then(response => {
+    if (!response.ok) {
+      return Error(response.statusText)
+    } else {
+      renderView(views.start)
+    }
+  })
+    .catch(error => {
+      console.error(error)
+    })
+});
+
+
+//Visa alla användarens inlägg
+function userEntries() {
+  const target = document.querySelector('#entriesUser');
+
+  fetch('/api/entries/userid', {
+    method: 'GET',
+  }).then(response => {
+    if (!response.ok) { throw Error(response.statusText); }
+
+    return response.json();
+  })
+    .then(data => {
+
+      for (let i = 0; i < data.length; i++) {
+        const div = document.createElement("div");
+        div.setAttribute("class", "entries");
+        div.setAttribute("style", "padding: 15px 0px");
+        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form id='deleteEntry'> <button type='submit'>Radera inlägg</button><input class='hidden' value='" + data[i].entryID + "'" + ">" + "</form>";
+        target.append(div);
+      }
+
+      bindDeleteEntry();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+
+//Skriv nytt inlägg
+const addNewEntry = document.querySelector('#newEntryForm')
+addNewEntry.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(addNewEntry);
+
+  fetch('/api/new/entry', {
+    method: 'POST',
+    body: formData
+  }).then(response => response.json())
+    .then(response => console.log())
+    .catch(error => console.error('Error:', error));
+})
+
+function bindDeleteEntry() {
+
+  const deleteEntries = document.querySelector('[data-delete="deleteEntry"]')
+  deleteEntries.forEach(deleteEntry => {
+
+    deleteEntry.addEventListener('submit', event => {
+      event.preventDefault();
+
+      let entryID = document.querySelector('#entryID')
+
+      fetch('/api/delete/' + entryID, {
+        method: 'POST',
+        body: formData
+      }).then(response => response.json())
+        .then(response => console.log(response.json()))
+        .catch(error => console.error('Error:', error));
+    })
+  })
+}
+
 
 

@@ -34,11 +34,9 @@ class User extends Mapper {
   }
 
   public function getUserWithoutPass($userID){
-    $statement = $this->db->prepare("SELECT `userID`, `username` FROM users WHERE userID = :userID");
-    $statement->execute([
-      ':userID' => $userID
-    ]);
-    return $statement->fetch(PDO::FETCH_ASSOC);
+    $statement = $this->db->prepare("SELECT `username` FROM users");
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function createNewUser($username, $password){
