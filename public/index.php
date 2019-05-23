@@ -3,7 +3,10 @@
   require __DIR__ . '/../vendor/autoload.php';
 
   // Start a session here
-  session_start();
+  if(session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
+  
 
   // Get settings and instantiate the app
   $settings = require __DIR__ . '/../src/settings.php';
