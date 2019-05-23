@@ -46,7 +46,7 @@ class User extends Mapper {
     VALUES (:username, :password)");
     $statement->execute([
       ':username' => $username,
-      ':password' => $password
+      ":password" => password_hash($_POST['password'], PASSWORD_BCRYPT)
     ]);
     
   }
@@ -55,15 +55,9 @@ class User extends Mapper {
     $statement = $this->db->prepare("SELECT * FROM users WHERE username = :username");
       $statement ->execute([
         ":username" => $username,
-
       ]);
-      $user = $statement->fetch(PDO::FETCH_ASSOC);
-      if(password_verify($password, $user['password'])){
-        $_SESSION['loggedIn'] = true;
-        alert ("Inloggad");
-      }else{
-        $error_message = "Sorry! Wrong password or username";
-      }
+      return $statement->fetch(PDO::FETCH_ASSOC);
+      
     
   }
 }
