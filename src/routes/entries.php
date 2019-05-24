@@ -33,28 +33,28 @@ return function ($app) {
 
 
       //Delete entry
-    $app->DELETE('/api/delete/{entryid}', function ($request, $response, $args) {
+    $app->POST('/api/delete/{entryid}', function ($request, $response, $args) {
       $entryID = $args['entryid'];
       $entry = new Entry($this->db);
-      return $response->withJson($entry->deleteEntry($userID, $entryID));
+      return $response->withJson($entry->deleteEntry($entryID));
     })->add($auth);
 
 
     //New entry
     $app->post('/api/new/entry', function ($request, $response, $args) {
       $data = $request->getParsedBody();
-      if($data['title'] && $data['content'] && $data['userID']) {
+      if(!empty($data['title']) && !empty($data['content']) && !empty($data['userID'])) {
         $title = $data['title'];
         $content = $data['content'];
         $userID = $data['userID'];
         $entry = new Entry($this->db);
         return $response->withJson($entry->createNewEntry($title, $content, $userID));
       }
-    })->add($auth);
+    });
 
 
     //Get last entries for specific userID OBS!! Måste skrivas om så att userID istället är från SESSION
-    $app->get('/api/entries/userid', function ($request, $response) { 
+    $app->get('/api/entries/{userid}', function ($request, $response) { 
       $entry = new Entry($this->db);   
       return $response->withJson($entry->getUserEntries());
   })->add($auth);

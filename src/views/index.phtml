@@ -58,9 +58,7 @@
     <input type="text" name="title" id="title"> <br>
     <label for="content">Inlägg</label>
     <input type="textarea" name="content" id="content"> <br>
-    <input type='text' name='userID' id="userID" value='<?=$_SESSION['userID']?>' style='display:none'><br>
-    <!-- <p>userID OBS!!! Denna input måste tas bort och ersättas av SESSION_userID</p> -->
-    <!-- <input type="textarea" name="userID" id="userID" value=7> <br> -->
+    <input type='number' name='userID' id="userID" value='<?=$_SESSION['userID']?>' style='display:none'><br>
     <button type="submit">Registrera inlägg</button>
     
   </form>

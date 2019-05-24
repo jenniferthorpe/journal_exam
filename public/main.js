@@ -182,11 +182,11 @@ function userEntries() {
         const div = document.createElement("div");
         div.setAttribute("class", "entries");
         div.setAttribute("style", "padding: 15px 0px");
-        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form id='deleteEntry'> <button type='submit'>Radera inlägg</button><input class='hidden' value='" + data[i].entryID + "'" + ">" + "</form>";
+        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form data-delete='deleteEntry'><input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">" + "<button type='submit'>Radera inlägg</button>" + "</form>";
         target.append(div);
       }
-
       bindDeleteEntry();
+      
     })
     .catch(err => {
       console.log(err);
@@ -199,33 +199,31 @@ const addNewEntry = document.querySelector('#newEntryForm')
 addNewEntry.addEventListener('submit', event => {
   event.preventDefault();
   const formData = new FormData(addNewEntry);
+  console.log(formData);
 
   fetch('/api/new/entry', {
     method: 'POST',
     body: formData
   }).then(response => response.json())
-    .then(response => console.log())
     .catch(error => console.error('Error:', error));
 })
 
+
 function bindDeleteEntry() {
 
-  const deleteEntries = document.querySelector('[data-delete="deleteEntry"]')
-  deleteEntries.forEach(deleteEntry => {
+  const deleteEntry = document.querySelector('[data-delete="deleteEntry"]')
 
     deleteEntry.addEventListener('submit', event => {
       event.preventDefault();
-
-      let entryID = document.querySelector('#entryID')
+      let entryID = document.querySelector('[name="entryID"]').value;
+      
 
       fetch('/api/delete/' + entryID, {
         method: 'POST',
-        body: formData
-      }).then(response => response.json())
-        .then(response => console.log(response.json()))
-        .catch(error => console.error('Error:', error));
+      })
+      // Lägg in felhantering
     })
-  })
+  
 }
 
 
