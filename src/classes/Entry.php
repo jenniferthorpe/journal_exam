@@ -7,20 +7,20 @@ class Entry extends Mapper {
     $statement->execute();
     return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
-
-  public function createNewEntry($title, $content, $userID){
+  
+  public function createNewEntry($title, $content){
     $datetime = date_create()->format('Y-m-d G:i:s');
     $statement = $this->db->prepare("INSERT INTO entries(title, content, createdAt, userID) VALUES (:title, :content, :createdAt, :userID)");
     $statement->execute([
       ':title' => $title,
       ':content' => $content,
       ':createdAt' => $datetime,
-      ':userID' => $userID
-    ]);
+      ':userID' => $_SESSION['userID']
+      ]);
   }
 
   public function getXLatestEntries($num) {
-    $orderby = 'ASC';
+    $orderby = 'DESC';
     $statement = $this->db->prepare("SELECT title, content FROM entries ORDER BY createdAt {$orderby} LIMIT :num");
     $statement->bindParam(':num', $num, PDO::PARAM_INT);
     $statement->execute();
@@ -46,7 +46,8 @@ class Entry extends Mapper {
   }
 
   public function getUserEntries() {
-    $statement = $this->db->prepare("SELECT * FROM entries WHERE userID = :userID");
+    $orderby = 'DESC';
+    $statement = $this->db->prepare("SELECT * FROM entries WHERE userID = :userID ORDER BY createdAt {$orderby}");
     $statement->execute([
       ':userID' => $_SESSION['userID']
     ]);

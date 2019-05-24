@@ -43,12 +43,15 @@ return function ($app) {
     //New entry
     $app->post('/api/new/entry', function ($request, $response, $args) {
       $data = $request->getParsedBody();
-      if(!empty($data['title']) && !empty($data['content']) && !empty($data['userID'])) {
+      if(!empty($data['title']) && !empty($data['content'])) {
         $title = $data['title'];
         $content = $data['content'];
-        $userID = $data['userID'];
+        // $userID = $_SESSION['userID'];
         $entry = new Entry($this->db);
-        return $response->withJson($entry->createNewEntry($title, $content, $userID));
+        return $response->withJson($entry->createNewEntry($title, $content));
+      }
+      else{
+        return $response->withStatus(401);
       }
     });
 

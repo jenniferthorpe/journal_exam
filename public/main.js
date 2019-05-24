@@ -156,7 +156,7 @@ function userEntries() {
         target.append(div);
       }
       bindEventListeners()
-      
+
     })
     .catch(err => {
       console.log(err);
@@ -186,44 +186,58 @@ function bindEventListeners() {
   deleteEntry.addEventListener('submit', event => {
     event.preventDefault();
     let entryID = document.querySelector('[name="entryID"]').value;
-      
+
 
     fetch('/api/delete/' + entryID, {
       method: 'POST',
     })
-      // Lägg in felhantering
-    })
+    // Lägg in felhantering
+  })
 
-    // Nytt inlägg
-    addNewEntry.addEventListener('submit', event => {
-     // Inget preventDefault eftersom sidan behöver ladda om för att visa det nya inlägget
-      const formData = new FormData(addNewEntry);
-      console.log(formData);
-    
-      fetch('/api/new/entry', {
-        method: 'POST',
-        body: formData
-      }).then(response => response.json())
-        .catch(error => console.error('Error:', error));
-    })
-    
 
-    //Logout
-    logoutForm.addEventListener('submit', event => {
-      event.preventDefault();
-      fetch('/api/logout', {
-        method: 'GET',
-      }).then(response => {
-        if (!response.ok) {
-          return Error(response.statusText)
-        } else {
-          renderView(views.start)
-        }
+  // Nytt inlägg
+  addNewEntry.addEventListener('submit', event => {
+    // Inget preventDefault eftersom sidan behöver ladda om för att visa det nya inlägget
+    event.preventDefault();
+    const formData = new FormData(addNewEntry);
+    console.log(formData);
+
+    fetch('/api/new/entry', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (!response.ok) {
+        messageRegisterEntry.innerHTML = "Ange titel och innehåll."
+        // return Error(response.statusText)
+      } else {
+        renderView(views.loggedIn);
+        userEntries();
+      }
+    })
+      .catch(error => {
+        console.error(error)
       })
-        .catch(error => {
-          console.error(error)
-        })
-    });
-  
+
+  })
+
+
+  //Logout
+  logoutForm.addEventListener('submit', event => {
+    event.preventDefault();
+    fetch('/api/logout', {
+      method: 'GET',
+    }).then(response => {
+      if (!response.ok) {
+        return Error(response.statusText)
+      } else {
+        renderView(views.start);
+        allEntries();
+      }
+    })
+      .catch(error => {
+        console.error(error)
+      })
+  });
+
 }
 
