@@ -36,7 +36,6 @@ return function ($app) {
     
   // Add a ping route
   $app->get('/api/ping', function ($request, $response, $args) {
-    
     return $response->withJson(['loggedIn' => true]);
   })->add($auth);
 };

@@ -33,7 +33,7 @@ class Entry extends Mapper {
     $statement->execute([
       ':entryID' => $entryID
     ]);
-    return $statement->fetch(PDO::FETCH_ASSOC);
+    
   }
 
   public function updateEntry($title, $content, $entryID){

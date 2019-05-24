@@ -135,36 +135,6 @@ allEntries();
 //-------Inloggat läge----------------//
 //------------------------------------//
 
-fetch('/api/ping')
-  .then(response => {
-    console.log(response);
-    if (response.ok) {
-      renderView(views.loggedIn);
-      userEntries();
-    }
-  })
-
-
-const logoutForm = document.querySelector("#logoutForm")
-
-//Logout
-logoutForm.addEventListener('submit', event => {
-  event.preventDefault();
-  fetch('/api/logout', {
-    method: 'GET',
-  }).then(response => {
-    if (!response.ok) {
-      return Error(response.statusText)
-    } else {
-      renderView(views.start)
-    }
-  })
-    .catch(error => {
-      console.error(error)
-    })
-});
-
-
 //Visa alla användarens inlägg
 function userEntries() {
   const target = document.querySelector('#entriesUser');
@@ -196,25 +166,35 @@ function userEntries() {
 
 //Skriv nytt inlägg
 
-
+fetch('/api/ping')
+  .then(response => {
+    console.log(response);
+    if (response.ok) {
+      renderView(views.loggedIn);
+      userEntries();
+    }
+  })
 
 
 function bindEventListeners() {
 
   const deleteEntry = document.querySelector('[data-delete="deleteEntry"]');
   const addNewEntry = document.querySelector('#newEntryForm');
+  const logoutForm = document.querySelector("#logoutForm")
 
-    deleteEntry.addEventListener('submit', event => {
-      event.preventDefault();
-      let entryID = document.querySelector('[name="entryID"]').value;
+  // Ta bort inlägg
+  deleteEntry.addEventListener('submit', event => {
+    event.preventDefault();
+    let entryID = document.querySelector('[name="entryID"]').value;
       
 
-      fetch('/api/delete/' + entryID, {
-        method: 'POST',
-      })
+    fetch('/api/delete/' + entryID, {
+      method: 'POST',
+    })
       // Lägg in felhantering
     })
 
+    // Nytt inlägg
     addNewEntry.addEventListener('submit', event => {
      // Inget preventDefault eftersom sidan behöver ladda om för att visa det nya inlägget
       const formData = new FormData(addNewEntry);
@@ -226,8 +206,24 @@ function bindEventListeners() {
       }).then(response => response.json())
         .catch(error => console.error('Error:', error));
     })
+    
+
+    //Logout
+    logoutForm.addEventListener('submit', event => {
+      event.preventDefault();
+      fetch('/api/logout', {
+        method: 'GET',
+      }).then(response => {
+        if (!response.ok) {
+          return Error(response.statusText)
+        } else {
+          renderView(views.start)
+        }
+      })
+        .catch(error => {
+          console.error(error)
+        })
+    });
   
 }
-
-
 

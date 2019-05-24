@@ -37,7 +37,7 @@ return function ($app) {
       $entryID = $args['entryid'];
       $entry = new Entry($this->db);
       return $response->withJson($entry->deleteEntry($entryID));
-    })->add($auth);
+    });
 
 
     //New entry
