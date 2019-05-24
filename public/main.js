@@ -1,7 +1,7 @@
 
 const views = {
   start: ["#loginFormTemplate", "#registerFormTemplate", "#entriesTemplate"],
-  loggedIn: ["#logoutFormTemplate", "#userEntriesTemplate", "#createNewEntryTemplate"]
+  loggedIn: ["#logoutFormTemplate", "#userEntriesTemplate", "#createNewEntryTemplate", "#newCommentTemplate"]
 }
 
 function renderView(view) {
@@ -61,6 +61,7 @@ function bindEvents() {
       } else {
         renderView(views.loggedIn)
         userEntries();
+        otherEntries();
       }
     })
       .catch(error => {
@@ -172,8 +173,42 @@ fetch('/api/ping')
     if (response.ok) {
       renderView(views.loggedIn);
       userEntries();
+      otherEntries();
     }
   })
+
+
+
+function otherEntries() {
+  const target = document.querySelector('#otherEntries');
+  // const target2 = document.querySelector('#otherEntriesComments');
+
+  fetch('/api/entries/users/other', {
+    method: 'GET',
+  }).then(response => {
+    if (!response.ok) { throw Error(response.statusText); }
+
+    return response.json();
+  })
+    .then(data => {
+
+      for (let i = 0; i < data.length; i++) {
+        const div = document.createElement("div");
+        div.setAttribute("class", "entries");
+        div.setAttribute("style", "padding: 15px 0px");
+        div.innerHTML += data[i].title + "<br>" + data[i].content
+          + "<br>" + "<form data-comment='commentEntry'><input class='hidden' name='entryIDComment' value='" + data[i].entryID + "'" + ">" +
+          "<textarea name='newComment'></textarea><br>" +
+          "<button type='submit'>Kommentera</button>" + "</form>";
+        target.append(div);
+      }
+      bindEventListenersComment();
+
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
 
 
 function bindEventListeners() {
@@ -187,7 +222,6 @@ function bindEventListeners() {
     event.preventDefault();
     let entryID = document.querySelector('[name="entryID"]').value;
 
-
     fetch('/api/delete/' + entryID, {
       method: 'POST',
     })
@@ -197,7 +231,6 @@ function bindEventListeners() {
 
   // Nytt inlägg
   addNewEntry.addEventListener('submit', event => {
-    // Inget preventDefault eftersom sidan behöver ladda om för att visa det nya inlägget
     event.preventDefault();
     const formData = new FormData(addNewEntry);
     console.log(formData);
@@ -208,7 +241,6 @@ function bindEventListeners() {
     }).then(response => {
       if (!response.ok) {
         messageRegisterEntry.innerHTML = "Ange titel och innehåll."
-        // return Error(response.statusText)
       } else {
         renderView(views.loggedIn);
         userEntries();
@@ -239,5 +271,36 @@ function bindEventListeners() {
       })
   });
 
+}; //Stänger bindEventListeners
+
+
+function bindEventListenersComment() {
+
+  const addComment = document.querySelector('[data-comment="commentEntry"]');
+
+  // Ny kommentar
+  addComment.addEventListener('submit', event => {
+    event.preventDefault();
+    let entryIDComment = document.querySelector('[name="entryIDComment"]').value;
+    const formData = new FormData(addComment);
+
+    fetch('/api/comment/' + entryIDComment, {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (!response.ok) {
+        messageRegisterEntry.innerHTML = "Kommentarsfält tomt"
+      } else {
+        renderView(views.loggedIn);
+        otherEntries();
+      }
+    })
+      .catch(error => {
+        console.error(error)
+      })
+
+  })
+
 }
+
 

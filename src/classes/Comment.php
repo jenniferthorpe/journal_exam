@@ -3,14 +3,14 @@
 class Comment extends Mapper {
 
 
-    public function createNewComment($title, $content, $entryID){
+    public function createNewComment($entryID, $content){
         $datetime = date_create()->format('Y-m-d G:i:s');
-        $statement = $this->db->prepare("INSERT INTO entries(title, content, createdAt, userID) VALUES (:title, :content, :createdAt, :userID)");
+        $statement = $this->db->prepare("INSERT INTO comments(entryID, content, createdBy, createdAt) VALUES (:entryID, :content, :createdBy, :createdAt)");
         $statement->execute([
-          ':title' => $title,
+          ':entryID' => $entryID,
           ':content' => $content,
-          ':createdAt' => $datetime,
-          ':userID' => $userID
+          ':createdBy' => $_SESSION['userID'],
+          ':createdAt' => $datetime
         ]);
       }
 

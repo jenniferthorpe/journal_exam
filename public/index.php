@@ -28,6 +28,9 @@
 
   $entry = require __DIR__. '/../src/routes/entries.php';
   $entry($app);
+  
+  $comments = require __DIR__. '/../src/routes/comments.php';
+  $comments($app);
 
   // Run app
   $app->run();

@@ -55,4 +55,13 @@ class Entry extends Mapper {
   }
 
 
+  public function getOtherEntries() {
+    $statement = $this->db->prepare("SELECT * FROM entries WHERE NOT userID = :userID");
+    $statement->execute([
+      ":userID" => $_SESSION['userID']
+    ]);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+
 }

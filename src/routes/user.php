@@ -41,6 +41,7 @@ return function ($app) {
     else {
       return $response->withStatus(401);
     }
+  });
 
 
     // Get only username
@@ -50,7 +51,6 @@ return function ($app) {
       
        return $response->withJson($user->getUserWithoutPass($userID));
     })->add($auth);
-  });
   
   
   
@@ -64,4 +64,6 @@ return function ($app) {
     //     return $response->withJson($user->changeUsername($username, $newUsername));
     //   }
     // })->add($auth);
+
+    
 };

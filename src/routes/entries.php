@@ -63,5 +63,13 @@ return function ($app) {
   })->add($auth);
 
 
+
+      // Get other users entries
+      $app->get('/api/entries/users/other', function ($request, $response) { 
+        $entry = new Entry($this->db);   
+        return $response->withJson($entry->getOtherEntries());
+    })->add($auth);
+
+
 };
 
