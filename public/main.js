@@ -185,7 +185,7 @@ function userEntries() {
         div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form data-delete='deleteEntry'><input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">" + "<button type='submit'>Radera inlägg</button>" + "</form>";
         target.append(div);
       }
-      bindDeleteEntry();
+      bindEventListeners()
       
     })
     .catch(err => {
@@ -195,23 +195,14 @@ function userEntries() {
 
 
 //Skriv nytt inlägg
-const addNewEntry = document.querySelector('#newEntryForm')
-addNewEntry.addEventListener('submit', event => {
-  event.preventDefault();
-  const formData = new FormData(addNewEntry);
-  console.log(formData);
-
-  fetch('/api/new/entry', {
-    method: 'POST',
-    body: formData
-  }).then(response => response.json())
-    .catch(error => console.error('Error:', error));
-})
 
 
-function bindDeleteEntry() {
 
-  const deleteEntry = document.querySelector('[data-delete="deleteEntry"]')
+
+function bindEventListeners() {
+
+  const deleteEntry = document.querySelector('[data-delete="deleteEntry"]');
+  const addNewEntry = document.querySelector('#newEntryForm');
 
     deleteEntry.addEventListener('submit', event => {
       event.preventDefault();
@@ -222,6 +213,18 @@ function bindDeleteEntry() {
         method: 'POST',
       })
       // Lägg in felhantering
+    })
+
+    addNewEntry.addEventListener('submit', event => {
+     // Inget preventDefault eftersom sidan behöver ladda om för att visa det nya inlägget
+      const formData = new FormData(addNewEntry);
+      console.log(formData);
+    
+      fetch('/api/new/entry', {
+        method: 'POST',
+        body: formData
+      }).then(response => response.json())
+        .catch(error => console.error('Error:', error));
     })
   
 }
