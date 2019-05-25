@@ -55,13 +55,24 @@ class Entry extends Mapper {
   }
 
 
+  // public function getOtherEntries() {
+  //   $statement = $this->db->prepare("SELECT * FROM entries WHERE NOT userID = :userID");
+  //   $statement->execute([
+  //     ":userID" => $_SESSION['userID']
+  //   ]);
+  //   return $statement->fetchAll(PDO::FETCH_ASSOC);
+  // }
+
   public function getOtherEntries() {
-    $statement = $this->db->prepare("SELECT * FROM entries WHERE NOT userID = :userID");
-    $statement->execute([
-      ":userID" => $_SESSION['userID']
-    ]);
+    $statement = $this->db->prepare(" SELECT entries.entryID, entries.title, entries.content, entries.userID, comments.commentID, comments.entryID, comments.content AS comment, comments.createdBy
+    FROM entries
+    LEFT JOIN comments 
+    ON entries.entryID = comments.entryID");
+
+    $statement->execute();
     return $statement->fetchAll(PDO::FETCH_ASSOC);
   }
 
 
+  
 }

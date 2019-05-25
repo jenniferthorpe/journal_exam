@@ -4,7 +4,7 @@ return function ($app) {
     // Register auth middleware
     $auth = require __DIR__ . '/../middlewares/auth.php';
 
-//New entry
+//New comment
 $app->post('/api/comment/{entryID}', function ($request, $response, $args) {
     $data = $request->getParsedBody();
     if(!empty($data['newComment'])) {
@@ -16,7 +16,23 @@ $app->post('/api/comment/{entryID}', function ($request, $response, $args) {
     else{
       return $response->withStatus(401);
     }
-  })->add($auth);
+})->add($auth);
+
+
+//Delete comment
+$app->delete('/api/comment/{commentID}', function ($request, $response, $args) {
+    $data = $request->getParsedBody();
+    // if($data['createdBy'] == $_SESSION['userID']) {
+      $commentID = $args['commentID'];
+      $comment = new Comment($this->db);
+      return $response->withJson($comment->deleteComment($commentID));
+    // }
+    // else{
+    //   return $response->withStatus(401);
+    // }
+})->add($auth);
+
+
 
 }
 

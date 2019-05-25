@@ -180,8 +180,7 @@ fetch('/api/ping')
 
 
 function otherEntries() {
-  const target = document.querySelector('#otherEntries');
-  // const target2 = document.querySelector('#otherEntriesComments');
+  const target = document.querySelector('.otherEntries');
 
   fetch('/api/entries/users/other', {
     method: 'GET',
@@ -194,13 +193,21 @@ function otherEntries() {
 
       for (let i = 0; i < data.length; i++) {
         const div = document.createElement("div");
+        const div2 = document.createElement("div");
         div.setAttribute("class", "entries");
         div.setAttribute("style", "padding: 15px 0px");
         div.innerHTML += data[i].title + "<br>" + data[i].content
           + "<br>" + "<form data-comment='commentEntry'><input class='hidden' name='entryIDComment' value='" + data[i].entryID + "'" + ">" +
           "<textarea name='newComment'></textarea><br>" +
           "<button type='submit'>Kommentera</button>" + "</form>";
+        if (!(data[i].comment == null)) {
+          div2.innerHTML += data[i].comment +
+            "<form data-deleteComment='deleteComment'><input class='hidden' name='commentID' value='" + data[i].commentID + "'" +
+            "><input class='hidden' name='createdBy' value='" + data[i].createdBy + "'" + ">" +
+            "<button type='submit'>Radera kommentar</button>" + "</form>";
+        }
         target.append(div);
+        target.append(div2);
       }
       bindEventListenersComment();
 
@@ -209,6 +216,7 @@ function otherEntries() {
       console.log(err);
     });
 }
+
 
 
 function bindEventListeners() {
@@ -277,9 +285,10 @@ function bindEventListeners() {
 function bindEventListenersComment() {
 
   const addComment = document.querySelector('[data-comment="commentEntry"]');
+  const deleteComment = document.querySelector('[data-deleteComment="deleteComment"]');
 
   // Ny kommentar
-  addComment.addEventListener('submit', event => {
+  addComment[i].addEventListener('submit', event => {
     event.preventDefault();
     let entryIDComment = document.querySelector('[name="entryIDComment"]').value;
     const formData = new FormData(addComment);
@@ -299,6 +308,30 @@ function bindEventListenersComment() {
         console.error(error)
       })
 
+  })
+
+
+  //Radera kommentar
+  deleteComment.addEventListener('submit', event => {
+    event.preventDefault();
+    let commentID = document.querySelector('[name="commentID"]').value;
+    const formData = new FormData(deleteComment);
+
+
+    fetch('/api/comment/' + commentID, {
+      method: 'DELETE',
+      body: formData
+    }).then(response => {
+      if (!response.ok) {
+        messageComments.innerHTML = "Du kan bara ta bort dina egna kommentarer";
+      } else {
+        renderView(views.loggedIn);
+        otherEntries();
+      }
+    })
+      .catch(error => {
+        console.error(error)
+      })
   })
 
 }

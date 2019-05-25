@@ -13,6 +13,13 @@ class Comment extends Mapper {
           ':createdAt' => $datetime
         ]);
       }
+   
+      public function deleteComment($commentID){
+        $statement = $this->db->prepare("DELETE FROM comments WHERE commentID = :commentID");
+        $statement->execute([
+          ':commentID' => $commentID
+        ]);
+      }
 
 
 }
