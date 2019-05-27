@@ -33,11 +33,11 @@ return function ($app) {
 
 
       //Delete entry
-    $app->POST('/api/delete/{entryid}', function ($request, $response, $args) {
+    $app->DELETE('/api/delete/{entryid}', function ($request, $response, $args) {
       $entryID = $args['entryid'];
       $entry = new Entry($this->db);
       return $response->withJson($entry->deleteEntry($entryID));
-    });
+    })->add($auth);
 
 
     //New entry

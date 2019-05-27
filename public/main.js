@@ -245,11 +245,38 @@ function otherEntriesComments(entryID, div) {
 
 function bindEventListeners() {
 
-  const deleteEntry = document.querySelector('[data-delete="deleteEntry"]');
+  const deleteEntry = document.querySelectorAll('[data-delete="deleteEntry"]');
   const addNewEntry = document.querySelector('#newEntryForm');
   const logoutForm = document.querySelector("#logoutForm")
 
   // Ta bort inlägg
+
+  deleteEntry.forEach(function (deleteEntryForm) {
+    deleteEntryForm.addEventListener('submit', event => {
+      // Tagit bort preventDefault för att sidan ska ladda om och hämta entries på nytt
+
+      let entryIDDelete = deleteEntryForm.querySelector('[name="entryID"]').value;
+      console.log(entryIDDelete);
+
+
+      fetch('/api/delete/' + entryIDDelete, {
+        method: 'DELETE',
+        
+      }).then(response => {
+        if (!response.ok) {
+
+        } else {
+          renderView(views.loggedIn);
+          otherEntries();
+        }
+      })
+        .catch(error => {
+          console.error(error)
+        })
+    })
+
+  })
+/*
   deleteEntry.addEventListener('submit', event => {
     event.preventDefault();
     let entryID = document.querySelector('[name="entryID"]').value;
@@ -259,7 +286,7 @@ function bindEventListeners() {
     })
     // Lägg in felhantering
   })
-
+*/
 
   // Nytt inlägg
   addNewEntry.addEventListener('submit', event => {
