@@ -174,6 +174,7 @@ fetch('/api/ping')
       renderView(views.loggedIn);
       userEntries();
       otherEntries();
+
     }
   })
 
@@ -193,21 +194,14 @@ function otherEntries() {
 
       for (let i = 0; i < data.length; i++) {
         const div = document.createElement("div");
-        const div2 = document.createElement("div");
         div.setAttribute("class", "entries");
         div.setAttribute("style", "padding: 15px 0px");
         div.innerHTML += data[i].title + "<br>" + data[i].content
           + "<br>" + "<form data-comment='commentEntry'><input class='hidden' name='entryIDComment' value='" + data[i].entryID + "'" + ">" +
           "<textarea name='newComment'></textarea><br>" +
           "<button type='submit'>Kommentera</button>" + "</form>";
-        if (!(data[i].comment == null)) {
-          div2.innerHTML += data[i].comment +
-            "<form data-deleteComment='deleteComment'><input class='hidden' name='commentID' value='" + data[i].commentID + "'" +
-            "><input class='hidden' name='createdBy' value='" + data[i].createdBy + "'" + ">" +
-            "<button type='submit'>Radera kommentar</button>" + "</form>";
-        }
         target.append(div);
-        target.append(div2);
+        otherEntriesComments(data[i].entryID, div);
       }
       bindEventListenersComment();
 
@@ -215,7 +209,36 @@ function otherEntries() {
     .catch(err => {
       console.log(err);
     });
+
 }
+
+
+function otherEntriesComments(entryID, div) {
+
+  fetch('/api/entries/users/other/comments', {
+    method: 'GET',
+  }).then(response => {
+    if (!response.ok) { throw Error(response.statusText); }
+
+    return response.json();
+  })
+    .then(data => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].entryID === entryID) {
+          const divComment = document.createElement("div");
+          divComment.innerHTML = data[i].content + "<form data-deleteComment='deleteComment'><input class='hidden' name='commentIDDelete' value='" + data[i].commentID + "'" +
+            ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
+          div.append(divComment)
+        }
+      }
+
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+
+};
 
 
 
@@ -282,58 +305,73 @@ function bindEventListeners() {
 }; //Stänger bindEventListeners
 
 
+
+
+
 function bindEventListenersComment() {
 
-  const addComment = document.querySelector('[data-comment="commentEntry"]');
-  const deleteComment = document.querySelector('[data-deleteComment="deleteComment"]');
+  console.log('Bind Listeners');
+
+  const addComment = document.querySelectorAll('[data-comment="commentEntry"]');
+  const deleteComment = document.querySelectorAll('[data-deleteComment="deleteComment"]');
 
   // Ny kommentar
-  addComment[i].addEventListener('submit', event => {
-    event.preventDefault();
-    let entryIDComment = document.querySelector('[name="entryIDComment"]').value;
-    const formData = new FormData(addComment);
+  addComment.forEach(function (addCommentForm) {
+    addCommentForm.addEventListener('submit', event => {
+      event.preventDefault();
 
-    fetch('/api/comment/' + entryIDComment, {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (!response.ok) {
-        messageRegisterEntry.innerHTML = "Kommentarsfält tomt"
-      } else {
-        renderView(views.loggedIn);
-        otherEntries();
-      }
-    })
-      .catch(error => {
-        console.error(error)
+      const formData = new FormData(addCommentForm);
+      let entryIDComment = addCommentForm.querySelector('[name="entryIDComment"]').value;
+
+      fetch('/api/comment/' + entryIDComment, {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        if (!response.ok) {
+          messageRegisterEntry.innerHTML = "Kommentarsfält tomt"
+        } else {
+          renderView(views.loggedIn);
+          otherEntries();
+        }
       })
+        .catch(error => {
+          console.error(error)
+        })
 
-  })
+    });
+  });
+
 
 
   //Radera kommentar
-  deleteComment.addEventListener('submit', event => {
-    event.preventDefault();
-    let commentID = document.querySelector('[name="commentID"]').value;
-    const formData = new FormData(deleteComment);
+
+  deleteComment.forEach(function (deleteCommentForm) {
+    deleteCommentForm.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const formData = new FormData(deleteCommentForm);
+      let commentIDDelete = deleteCommentForm.querySelector('[name="commentIDDelete"]').value;
+      console.log(commentIDDelete);
 
 
-    fetch('/api/comment/' + commentID, {
-      method: 'DELETE',
-      body: formData
-    }).then(response => {
-      if (!response.ok) {
-        messageComments.innerHTML = "Du kan bara ta bort dina egna kommentarer";
-      } else {
-        renderView(views.loggedIn);
-        otherEntries();
-      }
-    })
-      .catch(error => {
-        console.error(error)
+      fetch('/api/comment', {
+        method: 'DELETE',
+        body: formData
+      }).then(response => {
+        if (!response.ok) {
+
+        } else {
+          renderView(views.loggedIn);
+          otherEntries();
+        }
       })
+        .catch(error => {
+          console.error(error)
+        })
+    })
+
   })
 
-}
+};
 
 

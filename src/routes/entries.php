@@ -69,6 +69,7 @@ return function ($app) {
         $entry = new Entry($this->db);   
         return $response->withJson($entry->getOtherEntries());
     })->add($auth);
+      
 
 
 };

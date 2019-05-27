@@ -3,6 +3,12 @@
 class Comment extends Mapper {
 
 
+  public function getOtherEntriesComments() {
+    $statement = $this->db->prepare("SELECT * FROM comments");
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+  }
+
     public function createNewComment($entryID, $content){
         $datetime = date_create()->format('Y-m-d G:i:s');
         $statement = $this->db->prepare("INSERT INTO comments(entryID, content, createdBy, createdAt) VALUES (:entryID, :content, :createdBy, :createdAt)");
