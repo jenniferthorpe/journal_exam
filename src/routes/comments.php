@@ -28,11 +28,11 @@ $app->post('/api/comment/{entryID}', function ($request, $response, $args) {
 
 
 //Delete comment
-$app->delete('/api/comment', function ($request, $response, $args) {
-    $data = $request->getParsedBody();
+$app->delete('/api/comment/{commentID}', function ($request, $response, $args) {
+    
     
     // if($data['createdBy'] == $_SESSION['userID']) {
-        $commentID = $data['commentIDDelete'];
+        $commentID = $args['commentID'];
       $comment = new Comment($this->db);
       return $response->withJson($comment->deleteComment($commentID));
     // }

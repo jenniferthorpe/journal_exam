@@ -229,9 +229,10 @@ function otherEntriesComments(entryID, div) {
           divComment.innerHTML = data[i].content + "<form data-deleteComment='deleteComment'><input class='hidden' name='commentIDDelete' value='" + data[i].commentID + "'" +
             ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
           div.append(divComment)
+          bindEventDeleteComment();
         }
-      }
-
+      };
+      
     })
     .catch(err => {
       console.log(err);
@@ -310,10 +311,10 @@ function bindEventListeners() {
 
 function bindEventListenersComment() {
 
-  console.log('Bind Listeners');
+ 
 
   const addComment = document.querySelectorAll('[data-comment="commentEntry"]');
-  const deleteComment = document.querySelectorAll('[data-deleteComment="deleteComment"]');
+  
 
   // Ny kommentar
   addComment.forEach(function (addCommentForm) {
@@ -340,23 +341,25 @@ function bindEventListenersComment() {
 
     });
   });
-
-
+}
 
   //Radera kommentar
+  function bindEventDeleteComment() {
+
+    const deleteComment = document.querySelectorAll('[data-deletecomment="deleteComment"]');
+    console.log(deleteComment);
 
   deleteComment.forEach(function (deleteCommentForm) {
     deleteCommentForm.addEventListener('submit', event => {
       event.preventDefault();
 
-      const formData = new FormData(deleteCommentForm);
       let commentIDDelete = deleteCommentForm.querySelector('[name="commentIDDelete"]').value;
       console.log(commentIDDelete);
 
 
-      fetch('/api/comment', {
+      fetch('/api/comment/' + commentIDDelete, {
         method: 'DELETE',
-        body: formData
+        
       }).then(response => {
         if (!response.ok) {
 
@@ -371,7 +374,7 @@ function bindEventListenersComment() {
     })
 
   })
-
+  
 };
 
 
