@@ -253,7 +253,7 @@ function bindEventListeners() {
 
   deleteEntry.forEach(function (deleteEntryForm) {
     deleteEntryForm.addEventListener('submit', event => {
-      // Tagit bort preventDefault för att sidan ska ladda om och hämta entries på nytt
+      event.preventDefault();
 
       let entryIDDelete = deleteEntryForm.querySelector('[name="entryID"]').value;
       console.log(entryIDDelete);
