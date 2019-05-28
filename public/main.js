@@ -216,12 +216,11 @@ function otherEntriesComments(entryID, div) {
         if (data[i].entryID === entryID) {
           const divComment = document.createElement("div");
           divComment.innerHTML = data[i].content + "<form data-deleteComment='deleteComment'><input class='hidden' name='commentIDDelete' value='" + data[i].commentID + "'" +
-            ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
-          div.append(divComment)
+            ">" + "<input class='hidden' name='commentUserIDDelete' value='" + data[i].createdBy + "'" + ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
+          div.append(divComment);
           bindEventDeleteComment();
         }
       };
-
     })
     .catch(err => {
       console.log(err);
