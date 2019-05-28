@@ -356,10 +356,10 @@ function bindEventDeleteComment() {
       event.preventDefault();
 
       let commentIDDelete = deleteCommentForm.querySelector('[name="commentIDDelete"]').value;
-      console.log(commentIDDelete);
+      let commentUserIDDelete = deleteCommentForm.querySelector('[name="commentUserIDDelete"]').value;
 
 
-      fetch('/api/comment/' + commentIDDelete, {
+      fetch('/api/comment/' + commentIDDelete + "/" + commentUserIDDelete, {
         method: 'DELETE',
       }).then(response => {
         if (!response.ok) {

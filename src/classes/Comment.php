@@ -20,12 +20,16 @@ class Comment extends Mapper {
       ]);
     }
   
-  public function deleteComment($commentID){
-    $statement = $this->db->prepare("DELETE FROM comments WHERE commentID = :commentID");
-    $statement->execute([
-      ':commentID' => $commentID
-    ]);
-  }
+    public function deleteComment($commentID, $userID){
+      if($userID == $_SESSION['userID']){
+        $statement = $this->db->prepare("DELETE FROM comments WHERE commentID = :commentID");
+        $statement->execute([
+          ':commentID' => $commentID
+        ]);
+      }else{
+        return "Nix, du får inte radera någon annans kommentar";
+      }
+    }
 
 
 }

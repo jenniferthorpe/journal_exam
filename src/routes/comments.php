@@ -29,10 +29,12 @@ $auth = require __DIR__ . '/../middlewares/auth.php';
 
 
     //Delete comment
-    $app->delete('/api/comment/{commentID}', function ($request, $response, $args) {
+    $app->DELETE('/api/comment/{commentID}/{userID}', function ($request, $response, $args) {
+    
         $commentID = $args['commentID'];
+        $userID = $args['userID'];
         $comment = new Comment($this->db);
-        return $response->withJson($comment->deleteComment($commentID));
+        return $response->withJson($comment->deleteComment($commentID, $userID));
     })->add($auth);
 
 }
