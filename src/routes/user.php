@@ -52,18 +52,5 @@ return function ($app) {
        return $response->withJson($user->getUserWithoutPass($userID));
     })->add($auth);
   
-  
-  
-    // //Change username
-    // $app->put('/user/change', function($request, $response, $args){
-    //   $data = $request->getParsedBody();
-    //   if($data['username'] && $data['newUsername']) {
-    //     $username = $data['username'];
-    //     $newUsername = $data['newUsername'];
-    //     $user = new User($this->db);
-    //     return $response->withJson($user->changeUsername($username, $newUsername));
-    //   }
-    // })->add($auth);
-
-    
+   
 };

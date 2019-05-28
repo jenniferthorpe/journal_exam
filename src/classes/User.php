@@ -16,15 +16,6 @@ class User extends Mapper {
     ]);
     return $statement->fetch(PDO::FETCH_ASSOC);
   }
-  
-  // public function changeUsername($username, $newUsername){
-  //   $statement = $this->db->prepare("UPDATE users SET username = :newUsername WHERE username = :username");
-  //   $statement->execute([
-  //     ':username' => $username,
-  //     ':newUsername' => $newUsername
-  //     ]);
-  //     return $statement->fetch(PDO::FETCH_ASSOC);
-  // }
    
   
   public function getAllUsers(){
