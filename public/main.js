@@ -278,6 +278,7 @@ function bindEventListeners() {
       } else {
         renderView(views.loggedIn);
         userEntries();
+        otherEntries();
       }
     })
       .catch(error => {
@@ -331,6 +332,7 @@ function bindEventListenersComment() {
           messageRegisterEntry.innerHTML = "Kommentarsfält tomt"
         } else {
           renderView(views.loggedIn);
+          userEntries();
           otherEntries();
         }
       })
@@ -364,6 +366,7 @@ function bindEventDeleteComment() {
 
         } else {
           renderView(views.loggedIn);
+          userEntries();
           otherEntries();
         }
       })
