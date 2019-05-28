@@ -18,7 +18,7 @@ return function ($app) {
 
 
     //Get X last entries
-    $app->get('/entries/last/{num}', function($request, $response, $args){
+    $app->get('/api/entries/last/{num}', function($request, $response, $args){
       $num = (int)$args['num'];
       $entries = new Entry($this->db);
       return $response->withJson($entries->getXLatestEntries($num));
@@ -26,7 +26,7 @@ return function ($app) {
 
 
     // Get all entries
-    $app->get('/entries', function ($request, $response) { 
+    $app->get('/api/entries', function ($request, $response) { 
         $entry = new Entry($this->db);   
         return $response->withJson($entry->getAllEntries());
     })->add($auth);
@@ -41,7 +41,7 @@ return function ($app) {
 
 
     //New entry
-    $app->post('/api/new/entry', function ($request, $response, $args) {
+    $app->post('/api/entry/new', function ($request, $response, $args) {
       $data = $request->getParsedBody();
       if(!empty($data['title']) && !empty($data['content'])) {
         $title = $data['title'];
@@ -56,18 +56,10 @@ return function ($app) {
     });
 
 
-    //Get last entries for specific userID OBS!! Måste skrivas om så att userID istället är från SESSION
-    $app->get('/api/entries/{userid}', function ($request, $response) { 
-      $entry = new Entry($this->db);   
-      return $response->withJson($entry->getUserEntries());
-  })->add($auth);
-
-
-
-      // Get other users entries
-      $app->get('/api/entries/users/other', function ($request, $response) { 
+      //Get last entries for specific userID
+      $app->get('/api/entries/userid', function ($request, $response) { 
         $entry = new Entry($this->db);   
-        return $response->withJson($entry->getOtherEntries());
+        return $response->withJson($entry->getUserEntries());
     })->add($auth);
       
 

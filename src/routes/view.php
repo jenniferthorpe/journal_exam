@@ -9,5 +9,4 @@ return function ($app) {
     ]);
   });
 
-
 };

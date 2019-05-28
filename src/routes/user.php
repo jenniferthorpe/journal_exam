@@ -4,13 +4,6 @@ return function ($app) {
   // Register auth middleware
   $auth = require __DIR__ . '/../middlewares/auth.php';
   
-  //Get user by username
-  $app->get('/user/name/{username}', function ($request, $response, $args) {
-    $userName = $args['username'];
-    $user = new User($this->db);
-    return $response->withJson($user->getUserByUsername($userName));
-  })->add($auth);
-  
   
   //Get user by id
   $app->get('/api/user/{id}', function ($request, $response, $args) {
@@ -19,9 +12,10 @@ return function ($app) {
     
     return $response->withJson($user->getUserByID($userID));
   })->add($auth);
+
   
-    //Get all users
-    $app->get('/api/allusers', function ($request, $response) {
+  //Get all users
+  $app->get('/api/allusers', function ($request, $response) {
     $user = new User($this->db);
     
     return $response->withJson($user->getAllUsers());
@@ -43,14 +37,5 @@ return function ($app) {
     }
   });
 
-
-    // Get only username
-    $app->get('/api/usernopass/{id}', function ($request, $response, $args) {
-      $userID = $args['id'];
-      $user = new User($this->db);
-      
-       return $response->withJson($user->getUserWithoutPass($userID));
-    })->add($auth);
-  
    
 };

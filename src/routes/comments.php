@@ -1,47 +1,39 @@
 <?php
 
 return function ($app) {
-    // Register auth middleware
-    $auth = require __DIR__ . '/../middlewares/auth.php';
 
-    // Get other comments
-    $app->get('/api/entries/users/other/comments', function ($request, $response) { 
+// Register auth middleware
+$auth = require __DIR__ . '/../middlewares/auth.php';
+
+
+    // Get all comments
+    $app->get('/api/comments', function ($request, $response) { 
         $entry = new Comment($this->db);   
-        return $response->withJson($entry->getOtherEntriesComments());
+        return $response->withJson($entry->getAllComments());
     })->add($auth);
 
 
+    //New comment
+    $app->post('/api/comment/{entryID}', function ($request, $response, $args) {
+        $data = $request->getParsedBody();
+        if(!empty($data['newComment'])) {
+            $entryID = $args['entryID'];
+            $content = $data['newComment'];
+            $comment = new Comment($this->db);
+            return $response->withJson($comment->createNewComment($entryID, $content));
+        }
+        else{
+          return $response->withStatus(401);
+        }
+    })->add($auth);
 
-//New comment
-$app->post('/api/comment/{entryID}', function ($request, $response, $args) {
-    $data = $request->getParsedBody();
-    if(!empty($data['newComment'])) {
-        $entryID = $args['entryID'];
-        $content = $data['newComment'];
-        $comment = new Comment($this->db);
-        return $response->withJson($comment->createNewComment($entryID, $content));
-    }
-    else{
-      return $response->withStatus(401);
-    }
-})->add($auth);
 
-
-//Delete comment
-$app->delete('/api/comment/{commentID}', function ($request, $response, $args) {
-    
-    
-    // if($data['createdBy'] == $_SESSION['userID']) {
+    //Delete comment
+    $app->delete('/api/comment/{commentID}', function ($request, $response, $args) {
         $commentID = $args['commentID'];
-      $comment = new Comment($this->db);
-      return $response->withJson($comment->deleteComment($commentID));
-    // }
-    // else{
-    //   return $response->withStatus(401);
-    // }
-})->add($auth);
-
-
+        $comment = new Comment($this->db);
+        return $response->withJson($comment->deleteComment($commentID));
+    })->add($auth);
 
 }
 
