@@ -61,6 +61,36 @@ return function ($app) {
         $entry = new Entry($this->db);   
         return $response->withJson($entry->getUserEntries());
     })->add($auth);
+
+
+
+    $app->get('/api/test4', function ($request, $response)
+    {
+       $statement = $this->db->prepare("SELECT `title`, `entryID` FROM `entries`");
+       $res = $statement->execute();
+       $rows = $statement->fetchAll();
+       echo( '<div class="what">');
+       foreach ($rows as $row) {
+           echo("<br>");
+           $path = "/api/test5/" . $row["entryID"];
+           $url = '<a href="' . $path . '">' . $row["title"] . "</a>";
+           echo $url;
+           //echo("</li>");
+       }
+       echo("</div>");
+    });
+
+
+    $app->get('/api/test5/{id}', function ($request, $response, $args)
+    {
+       $statement = $this->db->prepare("SELECT * FROM `entries` where entryID = " . $args["id"]);
+       $res = $statement->execute();
+       $rows = $statement->fetchAll();
+       $row = $rows[0];
+
+       echo "<h1>" . $row["title"] . "</h1>";
+       echo "<p>" . $row["content"] . "</p>";
+    });
       
 
 
