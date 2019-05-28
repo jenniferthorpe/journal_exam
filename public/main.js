@@ -15,12 +15,15 @@ function renderView(view) {
     const templateMarkup = document.querySelector(template).innerHTML;
 
     //Skapa en div
+
     const div = document.createElement("div");
 
     // Fyll diven med innehåll
+
     div.innerHTML = templateMarkup;
 
     // Lägg in diven i target (main-element)
+
     target.append(div);
 
     if (template === '#loginFormTemplate') { bindEvents() }
@@ -42,6 +45,7 @@ renderView(views.start);
 function bindEvents() {
   const loginForm = document.querySelector('#loginForm')
   const messageLogin = document.querySelector('#messageLogin')
+
 
   //Logga in
   loginForm.addEventListener('submit', event => {
@@ -67,6 +71,8 @@ function bindEvents() {
 }
 
 
+
+
 //Registrera användare
 const registerForm = document.querySelector('#registerForm')
 const messageRegister = document.querySelector('#messageRegister')
@@ -80,6 +86,7 @@ registerForm.addEventListener('submit', event => {
   }).then(response => {
     if (!response.ok) {
       messageRegister.innerHTML = "Ange ett användarnamn och lösenord."
+      // return Error(response.statusText)
     } else {
       messageRegister.innerHTML = "Användare skapad."
     }
@@ -96,7 +103,7 @@ let entryElement = document.querySelector("#entries");
 function allEntries() {
   const target = document.querySelector('#entries');
 
-  fetch('/api/entries/last/20')
+  fetch('/entries/last/20')
     .then(response => {
       if (!response.ok) {
         throw Error(response.statusText);
@@ -157,7 +164,9 @@ function userEntries() {
     });
 }
 
-//Hämta rätt vy när man laddar om sidan
+
+//Skriv nytt inlägg
+
 fetch('/api/ping')
   .then(response => {
     console.log(response);
@@ -170,10 +179,11 @@ fetch('/api/ping')
   })
 
 
+
 function otherEntries() {
   const target = document.querySelector('.otherEntries');
 
-  fetch('/api/entries', {
+  fetch('/api/entries/users/other', {
     method: 'GET',
   }).then(response => {
     if (!response.ok) { throw Error(response.statusText); }
@@ -199,12 +209,13 @@ function otherEntries() {
     .catch(err => {
       console.log(err);
     });
+
 }
 
 
 function otherEntriesComments(entryID, div) {
 
-  fetch('/api/comments', {
+  fetch('/api/entries/users/other/comments', {
     method: 'GET',
   }).then(response => {
     if (!response.ok) { throw Error(response.statusText); }
@@ -216,16 +227,18 @@ function otherEntriesComments(entryID, div) {
         if (data[i].entryID === entryID) {
           const divComment = document.createElement("div");
           divComment.innerHTML = data[i].content + "<form data-deleteComment='deleteComment'><input class='hidden' name='commentIDDelete' value='" + data[i].commentID + "'" +
-            ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
+            ">" + "<input class='hidden' name='commentUserIDDelete' value='" + data[i].createdBy + "'" + ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
           div.append(divComment)
           bindEventDeleteComment();
         }
       };
-
+      
     })
     .catch(err => {
       console.log(err);
     });
+
+
 };
 
 
@@ -237,6 +250,7 @@ function bindEventListeners() {
   const logoutForm = document.querySelector("#logoutForm")
 
   // Ta bort inlägg
+
   deleteEntry.forEach(function (deleteEntryForm) {
     deleteEntryForm.addEventListener('submit', event => {
       event.preventDefault();
@@ -244,14 +258,15 @@ function bindEventListeners() {
       let entryIDDelete = deleteEntryForm.querySelector('[name="entryID"]').value;
       console.log(entryIDDelete);
 
+
       fetch('/api/delete/' + entryIDDelete, {
         method: 'DELETE',
+        
       }).then(response => {
         if (!response.ok) {
 
         } else {
           renderView(views.loggedIn);
-          userEntries();
           otherEntries();
         }
       })
@@ -261,7 +276,17 @@ function bindEventListeners() {
     })
 
   })
+/*
+  deleteEntry.addEventListener('submit', event => {
+    event.preventDefault();
+    let entryID = document.querySelector('[name="entryID"]').value;
 
+    fetch('/api/delete/' + entryID, {
+      method: 'POST',
+    })
+    // Lägg in felhantering
+  })
+*/
 
   // Nytt inlägg
   addNewEntry.addEventListener('submit', event => {
@@ -269,7 +294,7 @@ function bindEventListeners() {
     const formData = new FormData(addNewEntry);
     console.log(formData);
 
-    fetch('/api/entry/new', {
+    fetch('/api/new/entry', {
       method: 'POST',
       body: formData
     }).then(response => {
@@ -313,7 +338,10 @@ function bindEventListeners() {
 
 function bindEventListenersComment() {
 
+ 
+
   const addComment = document.querySelectorAll('[data-comment="commentEntry"]');
+  
 
   // Ny kommentar
   addComment.forEach(function (addCommentForm) {
@@ -342,23 +370,25 @@ function bindEventListenersComment() {
   });
 }
 
+  //Radera kommentar
+  function bindEventDeleteComment() {
 
-//Radera kommentar
-function bindEventDeleteComment() {
-
-  const deleteComment = document.querySelectorAll('[data-deletecomment="deleteComment"]');
-  console.log(deleteComment);
+    const deleteComment = document.querySelectorAll('[data-deletecomment="deleteComment"]');
+    console.log(deleteComment);
 
   deleteComment.forEach(function (deleteCommentForm) {
     deleteCommentForm.addEventListener('submit', event => {
       event.preventDefault();
 
       let commentIDDelete = deleteCommentForm.querySelector('[name="commentIDDelete"]').value;
+      let commentUserIDDelete = deleteCommentForm.querySelector('[name="commentUserIDDelete"]').value;
       console.log(commentIDDelete);
+      console.log(commentUserIDDelete);
 
 
-      fetch('/api/comment/' + commentIDDelete, {
+      fetch('/api/comment/' + commentIDDelete + "/" + commentUserIDDelete, {
         method: 'DELETE',
+        
       }).then(response => {
         if (!response.ok) {
 
@@ -373,8 +403,7 @@ function bindEventDeleteComment() {
     })
 
   })
-
-
+  
 };
 
 
