@@ -146,7 +146,7 @@ function userEntries() {
         const div = document.createElement("div");
         div.setAttribute("class", "entries");
         div.setAttribute("style", "padding: 15px 0px");
-        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form data-delete='deleteEntry'><input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">" + "<button type='submit'>Radera inlägg</button>" + "</form>";
+        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form data-delete='deleteEntry'><input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">" + "<button class='btn btn-danger btn-sm' type='submit'>Radera inlägg</button>" + "</form>";
         target.append(div);
       }
       bindEventListeners()
@@ -189,7 +189,7 @@ function otherEntries() {
         div.innerHTML += data[i].title + "<br>" + data[i].content
           + "<br>" + "<form data-comment='commentEntry'><input class='hidden' name='entryIDComment' value='" + data[i].entryID + "'" + ">" +
           "<textarea name='newComment'></textarea><br>" +
-          "<button type='submit'>Kommentera</button>" + "</form>";
+          "<button class='btn btn-success btn-sm' type='submit'>Kommentera</button>" + "</form>";
         target.append(div);
         otherEntriesComments(data[i].entryID, div);
       }
@@ -216,7 +216,7 @@ function otherEntriesComments(entryID, div) {
         if (data[i].entryID === entryID) {
           const divComment = document.createElement("div");
           divComment.innerHTML = data[i].content + "<form data-deleteComment='deleteComment'><input class='hidden' name='commentIDDelete' value='" + data[i].commentID + "'" +
-            ">" + "<input class='hidden' name='commentUserIDDelete' value='" + data[i].createdBy + "'" + ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
+            ">" + "<input class='hidden' name='commentUserIDDelete' value='" + data[i].createdBy + "'" + ">" + "<button class='btn btn-danger btn-sm' type='submit'>Radera kommentar</button>" + "</form>";
           div.append(divComment);
           bindEventDeleteComment();
         }

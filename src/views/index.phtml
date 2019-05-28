@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title><?=$title?></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
 <template id="logoutFormTemplate">
   <form action="" id="logoutForm">
-    <button type="submit">Logga ut</button>
+    <button class="btn btn-danger btn-lg" type="submit">Logga ut</button>
   </form>
 </template>
 
@@ -22,7 +23,7 @@
     <input type="text" name="username" id="username"> <br>
     <label for="password">Lösenord</label>
     <input type="password" name="password" id="password"> <br>
-    <button type="submit">Logga in</button>
+    <button class="btn btn-success" type="submit">Logga in</button>
   </form>
   <div id="messageLogin"></div>
 </template>
@@ -35,7 +36,7 @@
     <input type="text" name="username"> <br>
     <label for="password">Lösenord</label>
     <input type="password" name="password"> <br>
-    <button type="submit">Registrera</button>
+    <button class="btn btn-success" type="submit">Registrera</button>
   </form>
   <div id="messageRegister"></div>
 </template>
@@ -53,13 +54,13 @@
 <template id="createNewEntryTemplate">
   <h2>Skriv ett nytt inlägg</h2>
   <form id="newEntryForm">
-    <label for="title">Titel</label>
+    <label for="title">Titel</label> <br>
     <input type="text" name="title" id="title"> <br>
-    <label for="content">Inlägg</label>
+    <label for="content">Inlägg</label> <br>
     <input type="textarea" name="content" id="content"> <br>
     <input type='number' name='userID' id="userID" value='<?=$_SESSION['userID']?>' style='display:none'><br>
   <div id="messageRegisterEntry"></div>
-    <button type="submit">Registrera inlägg</button>
+    <button class="btn btn-success" type="submit">Registrera inlägg</button>
   </form>
 </template> 
 
