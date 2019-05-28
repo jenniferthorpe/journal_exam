@@ -148,8 +148,8 @@ function userEntries() {
         div.setAttribute("style", "padding: 15px 0px");
        div.innerHTML += 
         "<form id='updateEntryForm' data-update='updateEntry'>"
-        + "<input type='text' name='title' id='title' value='" + data[i].title + "'" + "<br>"
-        + "<input type='text' name='content' id='content' value='" + data[i].content + "'" + "<br>" 
+        + "<input type='text' name='title' id='title' value='" + data[i].title + "'>" + "<br>"
+        + "<input type='text' name='content' id='content' value='" + data[i].content + "'>" + "<br>" 
         + "<input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">"
         + "<button type='submit'>Uppdatera</button>"
         + "</form>"
