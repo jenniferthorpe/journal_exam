@@ -5,16 +5,18 @@ return function ($app) {
     // Register auth middleware
     $auth = require __DIR__ . '/../middlewares/auth.php';
 
-    //Update entry
-    $app->put('/api/entry/update', function ($req, $resp, $args){
-      $data = $req->getParsedBody();
-      $title = $data['title'];
-      $content = $data['content'];
-      $entryID = $data['entryID'];
-      $entries = new Entry($this->db);
-    
-    return $resp->withJson($entries->updateEntry($title, $content, $entryID));
-    })->add($auth);
+// Redigera inlägg - kolla med jonas!
+// POST som uppdaterar ett entry med entryID som arg och userID från inloggad användare.
+ $app->post('/api/entry/update/{entryid}', function ($req, $resp, $args){
+  $data = $req->getParsedBody();
+  $userID = $_SESSION['userID']; //använder userID inloggad användare
+  $entryID = $args['entryid'];
+  $content = $data['content'];
+  $title = $data['title'];
+  $entries = new Entry($this->db);
+ 
+  return $resp->withJson($entries->updateEntry($content, $title, $entryID, $userID));
+ })->add($auth); //Jag behöver va inloggad för att kunna köra endpoint via postman
 
 
     //Get X last entries
