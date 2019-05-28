@@ -146,7 +146,16 @@ function userEntries() {
         const div = document.createElement("div");
         div.setAttribute("class", "entries");
         div.setAttribute("style", "padding: 15px 0px");
-        div.innerHTML += data[i].title + "<br>" + data[i].content + "<br>" + "<form data-delete='deleteEntry'><input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">" + "<button type='submit'>Radera inlägg</button>" + "</form>";
+       div.innerHTML += 
+        "<form id='updateEntryForm' data-update='updateEntry'>"
+        + "<input type='text' name='title' id='title' value='" + data[i].title + "'" + "<br>"
+        + "<input type='text' name='content' id='content' value='" + data[i].content + "'" + "<br>" 
+        + "<input class='hidden' name='entryID' value='" + data[i].entryID + "'" + ">"
+        + "<button type='submit'>Uppdatera</button>"
+        + "</form>"
+        + "<form data-delete='deleteEntry'><input class='hidden' name='entryID' value='" 
+        + data[i].entryID + "'" + ">" + "<button type='submit'>Radera inlägg</button>" 
+        + "</form>"
         target.append(div);
       }
       bindEventListeners()
@@ -233,6 +242,7 @@ function otherEntriesComments(entryID, div) {
 function bindEventListeners() {
 
   const deleteEntry = document.querySelectorAll('[data-delete="deleteEntry"]');
+  const updateEntry = document.querySelectorAll('[data-update="updateEntry"]');
   const addNewEntry = document.querySelector('#newEntryForm');
   const logoutForm = document.querySelector("#logoutForm")
 
@@ -262,6 +272,33 @@ function bindEventListeners() {
 
   })
 
+  // Uppdatera inlägg
+  updateEntry.forEach(function (updateEntryForm) {
+    updateEntryForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = new FormData(updateEntryForm);
+      console.log(formData);
+      let entryID = updateEntryForm.querySelector('[name="entryID"]').value;
+      console.log(entryID);
+
+      fetch('/api/entry/update/' + entryID, {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        if (!response.ok) {
+
+        } else {
+          renderView(views.loggedIn);
+          userEntries();
+          otherEntries();
+        }
+      })
+        .catch(error => {
+          console.error(error)
+        })
+    })
+
+  })
 
   // Nytt inlägg
   addNewEntry.addEventListener('submit', event => {
@@ -274,7 +311,7 @@ function bindEventListeners() {
       body: formData
     }).then(response => {
       if (!response.ok) {
-        messageRegisterEntry.innerHTML = "Ange titel och innehåll."
+
       } else {
         renderView(views.loggedIn);
         userEntries();
