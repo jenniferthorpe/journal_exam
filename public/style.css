@@ -6,13 +6,15 @@ body {
 }
 
 .container{
-  border: 2px solid black;
+  border: solid rgb(177, 175, 175) 2px;
+  border-radius: 20px;
   max-width: 1000px;
   margin: 100px auto 0 auto;
 }
 
 header{
   border-bottom: 1px solid black;
+  height: 10vw;
 }
 
 header h1{
@@ -20,13 +22,52 @@ header h1{
 }
 
 main {
-  max-width: 40em;
+  max-width: 50vw;
+  margin: auto;
+  text-align: center;
+  
 }
 
 h1 {
-  color: #e74c3c;
+  color: #378a54;
+  padding: 2vw;
 }
 
 .hidden{
   display: none;
 }
+
+div{
+  margin-top: 20px;
+}
+
+#entriesUser{
+  border: solid rgb(177, 175, 175) 2px;
+  border-radius: 20px;
+}
+
+#entries{
+  border: solid rgb(177, 175, 175) 2px;
+  border-radius: 20px;
+}
+
+#newEntryForm{
+  border: solid rgb(177, 175, 175) 2px;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.otherEntries{
+  border: solid rgb(177, 175, 175) 2px;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+/*New entry form*/
+
+#newEntryForm #content{
+  width: 40vw;
+  height: 20vw;
+}
+
+

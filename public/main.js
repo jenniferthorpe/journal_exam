@@ -198,7 +198,7 @@ function otherEntries() {
         div.innerHTML += data[i].title + "<br>" + data[i].content
           + "<br>" + "<form data-comment='commentEntry'><input class='hidden' name='entryIDComment' value='" + data[i].entryID + "'" + ">" +
           "<textarea name='newComment'></textarea><br>" +
-          "<button type='submit'>Kommentera</button>" + "</form>";
+          "<button class='btn btn-success btn-sm' type='submit'>Kommentera</button>" + "</form>";
         target.append(div);
         otherEntriesComments(data[i].entryID, div);
       }
@@ -225,12 +225,11 @@ function otherEntriesComments(entryID, div) {
         if (data[i].entryID === entryID) {
           const divComment = document.createElement("div");
           divComment.innerHTML = data[i].content + "<form data-deleteComment='deleteComment'><input class='hidden' name='commentIDDelete' value='" + data[i].commentID + "'" +
-            ">" + "<button type='submit'>Radera kommentar</button>" + "</form>";
-          div.append(divComment)
+            ">" + "<input class='hidden' name='commentUserIDDelete' value='" + data[i].createdBy + "'" + ">" + "<button class='btn btn-danger btn-sm' type='submit'>Radera kommentar</button>" + "</form>";
+          div.append(divComment);
           bindEventDeleteComment();
         }
       };
-
     })
     .catch(err => {
       console.log(err);
