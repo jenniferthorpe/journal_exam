@@ -174,7 +174,6 @@ fetch('/api/ping')
       renderView(views.loggedIn);
       userEntries();
       otherEntries();
-
     }
   })
 
@@ -232,7 +231,7 @@ function otherEntriesComments(entryID, div) {
           bindEventDeleteComment();
         }
       };
-      
+
     })
     .catch(err => {
       console.log(err);
@@ -261,12 +260,13 @@ function bindEventListeners() {
 
       fetch('/api/delete/' + entryIDDelete, {
         method: 'DELETE',
-        
+
       }).then(response => {
         if (!response.ok) {
 
         } else {
           renderView(views.loggedIn);
+          userEntries();
           otherEntries();
         }
       })
@@ -276,17 +276,17 @@ function bindEventListeners() {
     })
 
   })
-/*
-  deleteEntry.addEventListener('submit', event => {
-    event.preventDefault();
-    let entryID = document.querySelector('[name="entryID"]').value;
-
-    fetch('/api/delete/' + entryID, {
-      method: 'POST',
+  /*
+    deleteEntry.addEventListener('submit', event => {
+      event.preventDefault();
+      let entryID = document.querySelector('[name="entryID"]').value;
+  
+      fetch('/api/delete/' + entryID, {
+        method: 'POST',
+      })
+      // Lägg in felhantering
     })
-    // Lägg in felhantering
-  })
-*/
+  */
 
   // Nytt inlägg
   addNewEntry.addEventListener('submit', event => {
@@ -303,6 +303,7 @@ function bindEventListeners() {
       } else {
         renderView(views.loggedIn);
         userEntries();
+        otherEntries();
       }
     })
       .catch(error => {
@@ -338,10 +339,10 @@ function bindEventListeners() {
 
 function bindEventListenersComment() {
 
- 
+
 
   const addComment = document.querySelectorAll('[data-comment="commentEntry"]');
-  
+
 
   // Ny kommentar
   addComment.forEach(function (addCommentForm) {
@@ -370,11 +371,11 @@ function bindEventListenersComment() {
   });
 }
 
-  //Radera kommentar
-  function bindEventDeleteComment() {
+//Radera kommentar
+function bindEventDeleteComment() {
 
-    const deleteComment = document.querySelectorAll('[data-deletecomment="deleteComment"]');
-    console.log(deleteComment);
+  const deleteComment = document.querySelectorAll('[data-deletecomment="deleteComment"]');
+  console.log(deleteComment);
 
   deleteComment.forEach(function (deleteCommentForm) {
     deleteCommentForm.addEventListener('submit', event => {
@@ -386,12 +387,13 @@ function bindEventListenersComment() {
 
       fetch('/api/comment/' + commentIDDelete, {
         method: 'DELETE',
-        
+
       }).then(response => {
         if (!response.ok) {
 
         } else {
           renderView(views.loggedIn);
+          userEntries();
           otherEntries();
         }
       })
@@ -401,7 +403,7 @@ function bindEventListenersComment() {
     })
 
   })
-  
+
 };
 
 

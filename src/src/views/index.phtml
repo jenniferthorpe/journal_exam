@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><?=$title?></title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<template id="logoutFormTemplate">
+  <form action="" id="logoutForm">
+    <button type="submit">Logga ut</button>
+  </form>
+</template>
+
+<template id="loginFormTemplate">
+  <h2>Login</h2>
+  <form id="loginForm" action="login" method="POST">
+    <label for="username">Användarnamn</label>
+    <input type="text" name="username" id="username"> <br>
+    <label for="password">Lösenord</label>
+    <input type="password" name="password" id="password"> <br>
+    <button type="submit">Logga in</button>
+  </form>
+  <div id="messageLogin"></div>
+</template>
+
+<template id="registerFormTemplate">
+  <h2>Registrera användare</h2>
+  
+  <form id="registerForm">
+    <label for="username">Användarnamn</label>
+    <input type="text" name="username"> <br>
+    <label for="password">Lösenord</label>
+    <input type="password" name="password"> <br>
+    <button type="submit">Registrera</button>
+  </form>
+  <div id="messageRegister"></div>
+</template>
+
+<template id="entriesTemplate">
+  <h2>Senaste inläggen</h2>
+  <div id="entries"></div>
+</template>
+
+<template id="userEntriesTemplate">
+  <h2>Dina tidigare inlägg</h2>
+  <div id="entriesUser"></div>
+</template>
+
+<template id="createNewEntryTemplate">
+  <h2>Skriv ett nytt inlägg</h2>
+  <form id="newEntryForm">
+    <label for="title">Titel</label>
+    <input type="text" name="title" id="title"> <br>
+    <label for="content">Inlägg</label>
+    <input type="textarea" name="content" id="content"> <br>
+    <input type='number' name='userID' id="userID" value='<?=$_SESSION['userID']?>' style='display:none'><br>
+  <div id="messageRegisterEntry"></div>
+    <button type="submit">Registrera inlägg</button>
+  </form>
+</template> 
+
+
+<template id="newCommentTemplate">
+  <h2>Här kan du se och kommentera andra användares inlägg</h2>
+  <div class="otherEntries"></div>
+  <div id="messageComments"></div>
+</template> 
+  
+
+
+
+
+
+<!--</template>-->
+
+
+
+<div class="container">
+  <header>
+    <h1> <?= $title ?> </h1>
+  </header>
+</div>
+
+  <main>
+    
+    
+  </main>
+
+  <script type="text/javascript" src="main.js"></script>
+</body>
+</html>
